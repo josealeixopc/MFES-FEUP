@@ -3,8 +3,8 @@ class Client is subclass of User
 types
 	public Sex = <F> | <M>;
 	public Date:: 
-		day : nat
-		month: nat
+		day : nat1
+		month: nat1
 		year : nat;
 values
 	

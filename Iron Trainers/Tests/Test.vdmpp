@@ -15,10 +15,13 @@ operations
 	public static run: () ==> ()
  	run() ==
  	(
- 		ClientTest`run();
  		UserTest`run();
- 		ExerciseTest`run();
+ 		TrainerTest`run();
+ 		ClientTest`run();
+ 		
  		MilestoneTest`run();
+ 		
+ 		ExerciseTest`run();
  		SeriesTest`run();
  		SetTest`run();
  	);

@@ -3,14 +3,16 @@ class Client is subclass of User
 types
 
 	public Sex = <F> | <M>
-		inv s == s = <F> or s = <M>;
+		--inv s == s = <F> or s = <M>
+		;
 	public Date:: 
 		day : nat1
 		month: nat1
 		year : nat
-		inv d == d.month > 0 and d.month <= 12 
-			and d.day > 0 and d.day <= 31
-			and d.year > 1900;
+		--inv d == d.month > 0 and d.month <= 12 
+			--and d.day > 0 and d.day <= 31
+			--and d.year > 1900
+			;
 		
 values
 	

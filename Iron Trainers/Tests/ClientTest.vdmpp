@@ -14,7 +14,7 @@ instance variables
 	testGender : Client`Sex := <F>;
 	testWeight: real := 65.0;
 	testHeight: int := 180;
-	testBirthDate: Client`Date := mk_Client`Date(1980, 2, 3);
+	testBirthDate: Client`Date := mk_Client`Date(2, 3, 1980);
 	
 	c1 : Client := new Client(testEmail, testPassword, testName, testGender, testWeight, testHeight, testBirthDate);
 	

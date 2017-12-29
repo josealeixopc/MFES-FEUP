@@ -18,8 +18,8 @@ operations
 		mobile := nil;
 	)
 	pre len e > 0 and len e < 256
-		and len password > 0 and len password < 30
-		and len name > 0 and len name < 50;
+		and len p > 0 and len p < 30
+		and len n > 0 and len n < 50;
 	
 	-- Constructor of user with mobile phone
 	public User : String * String * String * int ==> User
@@ -30,9 +30,9 @@ operations
 		mobile := m;
 	)
 	pre len e > 0 and len e < 256
-		and len password > 0 and len password < 30
-		and len name > 0 and len name < 50
-		and len mobile = 9;
+		and len p > 0 and len p < 30
+		and len n > 0 and len n < 50
+		and (m div 10**8) = 9;	-- begins with 9
 
 	-- Get email of user
 	public getEmail : () ==> String

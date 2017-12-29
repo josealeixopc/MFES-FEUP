@@ -1,4 +1,4 @@
-class UserTest
+class UserTest is subclass of Test
 types
 -- TODO Define types here
 values
@@ -9,15 +9,10 @@ instance variables
 
 operations
 	
-	-- Verify if 'cond' is true or not
-	private assertTrue: bool ==>()
-	assertTrue(cond) == return
-	pre cond;
-	
 	private testName: () ==> ()
 	testName() == 
 	(
-		assertTrue(u.getName() = "llo")
+		assertEquals(u.getName(), "llo")
 	);
 	
 	public static main: () ==> ()

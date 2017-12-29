@@ -1,0 +1,33 @@
+class Series
+types
+-- TODO Define types here
+values
+-- TODO Define values here
+instance variables
+	load : real;
+	repetitions: nat;
+	exercise : Exercise;
+	
+operations
+	
+	public Series : real * nat * Exercise ==> Series
+	Series(l, r, e) == (
+		load := l;
+		repetitions:= r;
+		exercise := e;
+	);
+	
+	public getLoad : () ==> real
+	getLoad() == return load;
+	
+	public getNumberOfRepetions : () ==> nat
+	getNumberOfRepetions() == return repetitions;
+	
+	public getExercise : () ==> Exercise
+	getExercise() == return exercise;
+	
+functions
+-- TODO Define functiones here
+traces
+-- TODO Define Combinatorial Test Traces here
+end Series

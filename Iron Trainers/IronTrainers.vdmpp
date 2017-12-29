@@ -5,6 +5,7 @@ values
 -- TODO Define values here
 instance variables
 	users : set of Client := {};
+	trainers : set of Trainer := {};
 	
 operations
 
@@ -14,6 +15,13 @@ operations
 		users := users union {user}
 		pre user not in set users
 		post user in set users;
+		
+	-- Adds trainer to trainers
+	public addTrainer : Trainer ==> ()
+	addTrainer(trainer) ==
+		trainers := trainers union {trainer}
+		pre trainer not in set trainers
+		post trainer in set trainers;
 		
 functions
 -- TODO Define functiones here

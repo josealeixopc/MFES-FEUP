@@ -1,0 +1,41 @@
+class UserTest
+types
+-- TODO Define types here
+values
+-- TODO Define values here
+instance variables
+	
+	u : User := new User("hello", "ello", "llo");
+
+operations
+	
+	-- Verify if 'cond' is true or not
+	private assertTrue: bool ==>()
+	assertTrue(cond) == return
+	pre cond;
+	
+	private testName: () ==> ()
+	testName() == 
+	(
+		assertTrue(u.getName() = "llo")
+	);
+	
+	public static main: () ==> ()
+ 	main() ==
+ 	(
+ 		new UserTest().testName();
+ 	);
+			
+functions
+-- TODO Define functiones here
+traces
+-- test cases will be generated in all possible combinations
+-- must use the 'Combinatory Testing' (CT) perspective
+-- calls u.getName() 1 to 5 times when selecting Full Evaluation
+-- if we use 'Filtered Evaluation' we can random the number of times it is called
+-- these tests do not account for coverage
+
+	GetNameSeveralTimes:
+		u.getName(){1, 5};
+
+end UserTest

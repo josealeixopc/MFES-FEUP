@@ -5,7 +5,7 @@ values
 -- TODO Define values here
 instance variables
 	load : real;
-	repetitions: nat;
+	repetitions: nat1;
 	exercise : Exercise;
 	
 operations

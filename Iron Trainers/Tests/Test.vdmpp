@@ -19,6 +19,7 @@ operations
  		UserTest`run();
  		ExerciseTest`run();
  		MilestoneTest`run();
+ 		SeriesTest`run();
  	);
 		
 functions

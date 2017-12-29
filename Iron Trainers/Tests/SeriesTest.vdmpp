@@ -1,12 +1,43 @@
-class SeriesTest
+class SeriesTest is subclass of Test
 types
 -- TODO Define types here
 values
 -- TODO Define values here
 instance variables
--- TODO Define instance variables here
+
+	testLoad: rat := 120.0;
+	testTime: nat := 60;
+	testRepetitions: nat1 := 5;
+	
+	testExerciseName : seq of char := "testExerciseName";
+	testExerciseDescription : seq of char := "testExerciseDescription";
+	testExerciseBodyPart : Exercise`BodyPart := <Arm>;
+	
+	testExercise : Exercise := new Exercise(testExerciseName, testExerciseDescription, testExerciseBodyPart);
+	
+	s1 : Series := new Series(testLoad, testRepetitions, testExercise);
+	s2 : Series := new Series(testRepetitions, testExercise, testTime);
+
 operations
--- TODO Define operations here
+
+	private testConstructor: () ==> ()
+	testConstructor() == 
+	(
+		assertEquals(s1.getLoad(), testLoad);
+		assertEquals(s1.getNumberOfRepetitions(), testRepetitions);
+		assertEquals(s1.getExercise(), testExercise);
+
+		assertEquals(s2.getTime(), testTime);
+		assertEquals(s2.getNumberOfRepetitions(), testRepetitions);
+		assertEquals(s2.getExercise(), testExercise);
+	);
+	
+	public static run: () ==> ()
+ 	run() ==
+ 	(
+ 		new SeriesTest().testConstructor();
+ 	);
+
 functions
 -- TODO Define functiones here
 traces

@@ -28,10 +28,15 @@ operations
 	);
 	
 	public getLoad : () ==> real
-	getLoad() == return load;
+	getLoad() == return load
+	pre load <> nil;
 	
-	public getNumberOfRepetions : () ==> nat
-	getNumberOfRepetions() == return repetitions;
+	public getTime : () ==> nat
+	getTime() == return time
+	pre time <> nil;
+	
+	public getNumberOfRepetitions : () ==> nat
+	getNumberOfRepetitions() == return repetitions;
 	
 	public getExercise : () ==> Exercise
 	getExercise() == return exercise;

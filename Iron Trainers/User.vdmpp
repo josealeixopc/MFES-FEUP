@@ -9,28 +9,40 @@ instance variables
 	mobile : [int];
 	
 operations
+	-- Constructor of user without mobile phone
 	public User : String * String * String ==> User
 	User(e, p, n) == (
 		email := e;
 		password := p;
 		name := n;
 		mobile := nil;
-	);
+	)
+	pre len e > 0 and len e < 256
+		and len password > 0 and len password < 30
+		and len name > 0 and len name < 50;
 	
+	-- Constructor of user with mobile phone
 	public User : String * String * String * int ==> User
 	User(e, p, n, m) == (
 		email := e;
 		password := p;
 		name := n;
 		mobile := m;
-	);
+	)
+	pre len e > 0 and len e < 256
+		and len password > 0 and len password < 30
+		and len name > 0 and len name < 50
+		and len mobile = 9;
 
+	-- Get email of user
 	public getEmail : () ==> String
 	getEmail() == return email;
 	
+	-- Get password of user
 	public getPassword : () ==> String
 	getPassword() == return password;
 	
+	-- Get name of user
 	public getName : () ==> String
 	getName() == return name;
 

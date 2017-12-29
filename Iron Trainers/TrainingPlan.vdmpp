@@ -6,15 +6,24 @@ values
 instance variables
 	plan : map nat to Set;
 	
-operations
+		
+operations	
+
+	/*public TrainingPlan : () ==> ()
+	TrainingPlan() == (
+		dom plan := {};
+		rng plan := {};
+	);*/
 	
-	public TrainingPlan : map nat to Set ==> TrainingPlan
-	TrainingPlan(p) == (
-		plan := p;
-	);
+	public getDailyPlan : nat ==> Set
+	getDailyPlan(day) == 
+		return plan(day)
+		pre day > 0;
 	
-	public getPlan : () ==> map nat to Set
-	getPlan() == return plan;
+	public setPlan : nat * Set ==> ()
+	setPlan(day, p) == 
+		plan(day) := p
+		pre day > 0;
 	
 functions
 -- TODO Define functiones here

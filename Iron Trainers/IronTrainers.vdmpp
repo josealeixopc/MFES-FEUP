@@ -16,12 +16,26 @@ operations
 		pre user not in set users
 		post user in set users;
 		
+	-- Removes user from registered users
+	public removeUser : Client ==> ()
+	removeUser(user) ==
+		users := users \ {user}
+		pre user in set users
+		post user not in set users;
+		
 	-- Adds trainer to trainers
 	public addTrainer : Trainer ==> ()
 	addTrainer(trainer) ==
 		trainers := trainers union {trainer}
 		pre trainer not in set trainers
 		post trainer in set trainers;
+		
+	-- Removes trainer from trainers
+	public removeTrainer : Trainer ==> ()
+	removeTrainer(trainer) ==
+		trainers := trainers \ {trainer}
+		pre ({trainer} subset trainers) <> true
+		post ({trainer} subset trainers) <> false;
 		
 functions
 -- TODO Define functiones here

@@ -45,6 +45,9 @@ operations
 	-- Get name of user
 	public getName : () ==> String
 	getName() == return name;
+	
+	public getMobileNumber : () ==> int
+	getMobileNumber() == return mobile;
 
 functions
 	

@@ -4,21 +4,32 @@ types
 values
 -- TODO Define values here
 instance variables
+
+	testEmail: seq of char := "testEmail";
+	testPassword: seq of char := "testPassword";
+	testName: seq of char := "testName";
+	testMobileNumber : int := 911911911;
 	
-	u1 : User := new User("testEmail", "testPassword", "testName");
+	u1 : User := new User(testEmail, testPassword, testName);
+	u2 : User := new User(testEmail, testPassword, testName, testMobileNumber);
 
 operations
 	
 	private testConstructor: () ==> ()
 	testConstructor() == 
 	(
-		assertEquals(u1.getEmail(), "testEmail");
-		assertEquals(u1.getPassword(), "testPassword");
-		assertEquals(u1.getName(), "testName");
+		assertEquals(u1.getEmail(), testEmail);
+		assertEquals(u1.getPassword(), testPassword);
+		assertEquals(u1.getName(), testName);
+		
+		assertEquals(u2.getEmail(), testEmail);
+		assertEquals(u2.getPassword(), testPassword);
+		assertEquals(u2.getName(), testName);
+		assertEquals(u2.getMobileNumber(), testMobileNumber);
 	);
 	
-	public static main: () ==> ()
- 	main() ==
+	public static run: () ==> ()
+ 	run() ==
  	(
  		new UserTest().testConstructor();
  	);

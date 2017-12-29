@@ -11,6 +11,13 @@ operations
 	protected assertEquals: ? * ? ==> ()
 	assertEquals(expected, actual) == return
 	pre expected = actual;
+	
+	public static run: () ==> ()
+ 	run() ==
+ 	(
+ 		ClientTest`run();
+ 		UserTest`run();
+ 	);
 		
 functions
 -- TODO Define functiones here

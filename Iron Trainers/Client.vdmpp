@@ -1,11 +1,13 @@
 class Client is subclass of User
 
 types
+
 	public Sex = <F> | <M>;
 	public Date:: 
 		day : nat
 		month: nat
 		year : nat;
+		
 values
 	
 instance variables
@@ -13,18 +15,17 @@ instance variables
 	weight :  real;
 	height : nat;
 	birthDate : Date;
-	milestone : Milestone;
+	milestone : Milestone := new Milestone(0.0);
 
 operations
 
 	-- Constructor
-	public Client : String * String * String * Sex * real * nat * Date * Milestone ==> Client
-	Client(e, p, n, s, w, h, d, m) == (
+	public Client : String * String * String * Sex * real * nat * Date ==> Client
+	Client(e, p, n, s, w, h, d) == (
 		gender := s;
 		weight := w;
 		height := h;
 		birthDate := d;
-		milestone := m;
 		User(e, p, n);
 	);
 	

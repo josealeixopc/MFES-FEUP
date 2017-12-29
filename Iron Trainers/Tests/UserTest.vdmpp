@@ -1,29 +1,26 @@
-class UserTest
+class UserTest is subclass of Test
 types
 -- TODO Define types here
 values
 -- TODO Define values here
 instance variables
 	
-	u : User := new User("hello", "ello", "llo");
+	u1 : User := new User("testEmail", "testPassword", "testName");
 
 operations
 	
-	-- Verify if 'cond' is true or not
-	private assertTrue: bool ==>()
-	assertTrue(cond) == return
-	pre cond;
-	
-	private testName: () ==> ()
-	testName() == 
+	private testConstructor: () ==> ()
+	testConstructor() == 
 	(
-		assertTrue(u.getName() = "llo")
+		assertEquals(u1.getEmail(), "testEmail");
+		assertEquals(u1.getPassword(), "testPassword");
+		assertEquals(u1.getName(), "testName");
 	);
 	
 	public static main: () ==> ()
  	main() ==
  	(
- 		new UserTest().testName();
+ 		new UserTest().testConstructor();
  	);
 			
 functions
@@ -36,6 +33,6 @@ traces
 -- these tests do not account for coverage
 
 	GetNameSeveralTimes:
-		u.getName(){1, 5};
+		u1.getName(){1, 5};
 
 end UserTest

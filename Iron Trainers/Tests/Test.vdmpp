@@ -20,6 +20,7 @@ operations
  		ExerciseTest`run();
  		MilestoneTest`run();
  		SeriesTest`run();
+ 		SetTest`run();
  	);
 		
 functions

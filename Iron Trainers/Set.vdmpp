@@ -25,6 +25,11 @@ operations
 		
 		else existsInSet(s, tl list);
 		
+	public existsInSet : Series ==> bool
+	existsInSet(s) ==
+	
+		return existsInSet(s, series);
+		
 	-- returns index of element in seq
 	public getIndex : Series * seq of Series * int ==> int
 	getIndex(s, list, index) ==

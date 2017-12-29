@@ -2,7 +2,8 @@ class Exercise
 
 types
 	public String = seq of char;
-	public BodyPart = <Leg> | <Arm> | <Chest> | <Back>;
+	public BodyPart = <Leg> | <Arm> | <Chest> | <Back>
+		inv b == b = <Leg> or b = <Arm> or b = <Chest> or b = <Back>;
 	
 values
 
@@ -10,6 +11,9 @@ instance variables
 	name : String;
 	description : String;
 	bodyPart : BodyPart;
+	
+	inv len name > 0 and len name < 50 
+	and len description > 0 and len description < 250;
 
 operations
 
@@ -18,7 +22,9 @@ operations
 		name := n;
 		description := d;
 		bodyPart := b;
-	);
+	)
+	pre len n > 0 and len n < 50
+		and len d > 0 and len d < 250;
 	
 	public getName : () ==> String
 	getName() == return name;

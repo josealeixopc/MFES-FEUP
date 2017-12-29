@@ -4,17 +4,26 @@ types
 values
 -- TODO Define values here
 instance variables
-	desiredWeight : real;
+	desiredWeight : rat;
+	
+	-- Invariants
+	inv desiredWeight >= 0;
 	
 operations
 
-	public Milestone : real ==> Milestone
+	public Milestone : rat ==> Milestone
 	Milestone(d) == (
 		desiredWeight := d;
 	);
+	--pre d >= 0;
 	
-	public getDesiredWeight : () ==> real
+	public getDesiredWeight : () ==> rat
 	getDesiredWeight() == return desiredWeight;
+	
+	public setDesiredWeight : rat ==> ()
+	setDesiredWeight(w) == 
+		desiredWeight := w
+	pre w > 0;
 	
 functions
 -- TODO Define functiones here

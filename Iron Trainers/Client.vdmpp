@@ -43,7 +43,8 @@ operations
 	
 	-- get gender
 	public getGender : () ==> Sex
-	getGender() == return gender;
+	getGender() == return gender
+	pre gender <> nil;
 	
 	--get weight
 	public getWeight : () ==> real

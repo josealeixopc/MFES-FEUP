@@ -29,22 +29,20 @@ operations
 	private testConstructor: () ==> ()
 	testConstructor() == 
 	(
-		assertEquals(s1.existsInSet(testSeries1), true);
-		assertEquals(s1.existsInSet(testSeries2), true);
-		assertEquals(s1.existsInSet(testSeries3), true);
+		assertNotEquals(s1.getIndex(testSeries1), -1);
+		assertNotEquals(s1.getIndex(testSeries2), -1);
+		assertNotEquals(s1.getIndex(testSeries3), -1);
 		
 		assertEquals(s1.getSeries(), testSeriesSequence);
 				
-		assertEquals(s1.existsInSet(testSeries4), false);
+		assertEquals(s1.getIndex(testSeries4), -1);
 	);
-	
-	-- TODO: Get Index (could not understand the function)
 	
 	private testAddSeries: () ==> ()
 	testAddSeries () ==
 	(
 		s1.addSeries(testSeries4);
-		assertEquals(s1.existsInSet(testSeries4), true);
+		assertNotEquals(s1.getIndex(testSeries4), -1);
 	);
 	
 	public static run: () ==> ()

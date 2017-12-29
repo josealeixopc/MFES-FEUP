@@ -12,6 +12,10 @@ operations
 	assertEquals(expected, actual) == return
 	pre expected = actual;
 	
+	protected assertNotEquals: ? * ? ==> ()
+	assertNotEquals(expected, actual) == return
+	pre expected <> actual;
+	
 	public static run: () ==> ()
  	run() ==
  	(

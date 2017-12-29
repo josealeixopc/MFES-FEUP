@@ -13,28 +13,16 @@ operations
 		series := s;
 	);
 	
-	public getSeries : () ==> seq of Series 
+	public Set : () ==> Set
+	Set() == (
+		series := [];
+	);
+	
+	pure public getSeries : () ==> seq of Series 
 	getSeries() == return series;
 	
-	-- Verifies if an element s exists in seq. If so, returns true, else returns false.
-	public existsInSet : Series * seq of Series ==> bool
-	existsInSet(s, list) ==
-	
-		if len list = 0
-		then return false
-		
-		else if (s = hd list)
-		then return true
-		
-		else existsInSet(s, tl list);
-		
-	public existsInSet : Series ==> bool
-	existsInSet(s) ==
-	
-		return existsInSet(s, series);
-		
-	-- returns index of element in seq
-	public getIndex : Series * seq of Series * int ==> int
+	-- Verifies if an element s exists in seq. If so, returns its index, else returns -1.
+	private getIndex : Series * seq of Series * int ==> int
 	getIndex(s, list, index) ==
 	
 		if len list = 0
@@ -43,13 +31,21 @@ operations
 		else if (s = hd list)
 		then return index
 		
-		else getIndex(s, tl list, index + 1);
+		else getIndex(s, tl list, index + 1)
 		
-	-- adds series to series
+	pre index >= 0 and len list >= 0;
+		
+	-- Verifies if an element s exists in seq. If so, returns its index, else returns -1.
+	public getIndex : Series ==> int
+	getIndex(s) ==
+		return getIndex(s, series, 0);
+		
+		
+	-- Adds series to series
 	public addSeries : Series ==> ()
 	addSeries(s) ==
-		if existsInSet(s, series) = false
-		then series	:= series ^ [s];	
+		if getIndex(s) = -1
+		then series	:= series ^ [s];
 		
 	
 	/*public removeSeries : Series ==> ()

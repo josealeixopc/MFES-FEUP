@@ -3,11 +3,14 @@ types
 -- TODO Define types here
 values
 -- TODO Define values here
+
 instance variables
 	load : [rat];
 	time : [nat];
 	repetitions: nat1;
 	exercise : Exercise;
+	
+	inv repetitions > 0;
 	
 operations
 	
@@ -17,7 +20,9 @@ operations
 		repetitions:= r;
 		exercise := e;
 		time := nil;
-	);
+	)
+	pre l > 0 and r > 0
+	post load > 0;
 	
 	public Series : nat1 * Exercise * nat ==> Series
 	Series(r, e, t) == (
@@ -25,7 +30,9 @@ operations
 		exercise := e;
 		time := t;
 		load := nil;
-	);
+	)
+	pre t > 0 and r > 0
+	post time > 0;
 	
 	public getLoad : () ==> real
 	getLoad() == return load

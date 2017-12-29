@@ -4,21 +4,19 @@ types
 values
 -- TODO Define values here
 instance variables
-	plan : map nat to Set;
-	
+	plan : map nat1 to Set;
 		
 operations	
 
-	/*public TrainingPlan : () ==> ()
+	public TrainingPlan : () ==> TrainingPlan
 	TrainingPlan() == (
-		dom plan := {};
-		rng plan := {};
-	);*/
+		plan := { 1 |-> new Set()}; -- TODO ???
+	);
 	
 	public getDailyPlan : nat ==> Set
 	getDailyPlan(day) == 
 		return plan(day)
-		pre day > 0;
+		pre day > 0 and plan(day).getSeries() <> [];
 	
 	public setPlan : nat * Set ==> ()
 	setPlan(day, p) == 

@@ -1,6 +1,6 @@
-class Client
+class Client is subclass of User
+
 types
-	public String = seq of char;
 	public Sex = <F> | <M>;
 	public Date:: 
 		day : nat
@@ -13,27 +13,38 @@ instance variables
 	weight :  real;
 	height : nat;
 	birthDate : Date;
+	milestone : Milestone;
 
 operations
-	/*public Client : String * String * String ==> Client
-	Client(s, w, n) == (
-		email := e;
-		password := p;
-		name := n;
+
+	-- Constructor
+	public Client : String * String * String * Sex * real * nat * Date * Milestone ==> Client
+	Client(e, p, n, s, w, h, d, m) == (
+		gender := s;
+		weight := w;
+		height := h;
+		birthDate := d;
+		milestone := m;
+		User(e, p, n);
 	);
-	*/
+	
+	-- get gender
 	public getGender : () ==> Sex
 	getGender() == return gender;
 	
+	--get weight
 	public getWeight : () ==> real
 	getWeight() == return weight;
 	
+	-- get height
 	public getHeight : () ==> real
 	getHeight() == return height;
 	
+	-- set weight
 	public setWeight : real ==> ()
 	setWeight(w) == weight := w;
 	
+	--set height
 	public setHeight : nat ==> ()
 	setHeight(h) == height := h;
 	

@@ -1,0 +1,36 @@
+class Exercise
+
+types
+	public String = seq of char;
+	public BodyPart = <Leg> | <Arm> | <Chest> | <Back>;
+	
+values
+
+instance variables
+	name : String;
+	description : String;
+	bodyPart : BodyPart;
+
+operations
+
+	public Exercise : String * String * BodyPart ==> Exercise
+	Exercise(n, d, b) == (
+		name := n;
+		description := d;
+		bodyPart := b;
+	);
+	
+	public getName : () ==> String
+	getName() == return name;
+	
+	public getDescription : () ==> String
+	getDescription() == return description;
+	
+	public getBodyPart : () ==> BodyPart
+	getBodyPart() == return bodyPart;
+
+functions
+-- TODO Define functiones here
+traces
+-- TODO Define Combinatorial Test Traces here
+end Exercise

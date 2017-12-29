@@ -1,0 +1,33 @@
+class User
+types
+	public String = seq of char;
+	
+instance variables
+	email : String;
+	password : String;
+	name : String;
+	
+operations
+	public User : String * String * String ==> User
+	User(e, p, n) == (
+		email := e;
+		password := p;
+		name := n;
+	);
+
+	public getEmail : () ==> String
+	getEmail() == return email;
+	
+	public getPassword : () ==> String
+	getPassword() == return password;
+	
+	public getName : () ==> String
+	getName() == return name;
+
+functions
+	
+
+traces
+-- TODO Define Combinatorial Test Traces here
+
+end User

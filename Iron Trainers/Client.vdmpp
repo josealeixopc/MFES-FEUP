@@ -1,0 +1,47 @@
+class Client
+types
+	public String = seq of char;
+	public Sex = <F> | <M>;
+	public Date:: 
+		day : nat
+		month: nat
+		year : nat;
+values
+	
+instance variables
+	gender : Sex;
+	weight :  real;
+	height : nat;
+	birthDate : Date;
+
+operations
+	/*public Client : String * String * String ==> Client
+	Client(s, w, n) == (
+		email := e;
+		password := p;
+		name := n;
+	);
+	*/
+	public getGender : () ==> Sex
+	getGender() == return gender;
+	
+	public getWeight : () ==> real
+	getWeight() == return weight;
+	
+	public getHeight : () ==> real
+	getHeight() == return height;
+	
+	public setWeight : real ==> ()
+	setWeight(w) == weight := w;
+	
+	public setHeight : nat ==> ()
+	setHeight(h) == height := h;
+	
+
+functions
+-- TODO Define functiones here
+
+traces
+-- TODO Define Combinatorial Test Traces here
+
+end Client

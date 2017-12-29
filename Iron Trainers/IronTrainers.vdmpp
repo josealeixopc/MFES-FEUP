@@ -1,0 +1,22 @@
+class IronTrainers
+types
+-- TODO Define types here
+values
+-- TODO Define values here
+instance variables
+	users : set of User := {};
+	
+operations
+
+	-- Adds user to registered users
+	public addUser : User ==> ()
+	addUser(user) ==
+		users := users union {user}
+		pre user not in set users
+		post user in set users;
+		
+functions
+-- TODO Define functiones here
+traces
+-- TODO Define Combinatorial Test Traces here
+end IronTrainers

@@ -33,6 +33,9 @@ operations
 	
 	public getName : () ==> String
 	getName() == return name;
+	
+	public getMobileNumber : () ==> int
+	getMobileNumber() == return mobile;
 
 functions
 	

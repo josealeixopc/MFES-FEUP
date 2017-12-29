@@ -23,10 +23,24 @@ operations
 		assertEquals(c1.getHeight(), 1);
 	);
 	
+	private testSetters: () ==> ()
+	testSetters() == 
+	(
+		dcl newHeight : nat  := 2;
+		dcl newWeight : real  := 1.2;
+	
+		c1.setWeight(newWeight);
+		assertEquals(c1.getWeight(), newWeight);
+		
+		c1.setHeight(newHeight);
+		assertEquals(c1.getHeight(), newHeight);
+	);
+	
 	public static run: () ==> ()
  	run() ==
  	(
  		new ClientTest().testConstructor();
+ 		new ClientTest().testSetters();
  	);
 
 functions

@@ -1,4 +1,4 @@
-class Test
+class ClientTest is subclass of Test
 types
 -- TODO Define types here
 values
@@ -6,14 +6,9 @@ values
 instance variables
 -- TODO Define instance variables here
 operations
-
-	-- fails if expected is not equal to actual	
-	protected assertEquals: ? * ? ==> ()
-	assertEquals(expected, actual) == return
-	pre expected = actual;
-		
+-- TODO Define operations here
 functions
 -- TODO Define functiones here
 traces
 -- TODO Define Combinatorial Test Traces here
-end Test
+end ClientTest

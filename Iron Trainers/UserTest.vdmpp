@@ -5,20 +5,22 @@ values
 -- TODO Define values here
 instance variables
 	
-	u : User := new User("hello", "ello", "llo");
+	u : User := new User("testEmail", "testPassword", "testName");
 
 operations
 	
-	private testName: () ==> ()
-	testName() == 
+	private testConstructor: () ==> ()
+	testConstructor() == 
 	(
-		assertEquals(u.getName(), "llo")
+		assertEquals(u.getEmail(), "testEmail");
+		assertEquals(u.getPassword(), "testPassword");
+		assertEquals(u.getName(), "testName");
 	);
 	
 	public static main: () ==> ()
  	main() ==
  	(
- 		new UserTest().testName();
+ 		new UserTest().testConstructor();
  	);
 			
 functions

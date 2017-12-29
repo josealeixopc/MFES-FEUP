@@ -17,8 +17,8 @@ operations
 		assertEquals(u1.getName(), "testName");
 	);
 	
-	public static main: () ==> ()
- 	main() ==
+	public static run: () ==> ()
+ 	run() ==
  	(
  		new UserTest().testConstructor();
  	);

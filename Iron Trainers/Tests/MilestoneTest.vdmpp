@@ -1,14 +1,30 @@
-class MilestoneClass
+class MilestoneTest is subclass of Test
 types
 -- TODO Define types here
 values
 -- TODO Define values here
 instance variables
--- TODO Define instance variables here
+
+	testDesiredWeight : real := 60.0;
+	
+	m1 : Milestone := new Milestone(testDesiredWeight);
+
 operations
--- TODO Define operations here
+
+	private testConstructor: () ==> ()
+	testConstructor() == 
+	(
+		assertEquals(m1.getDesiredWeight(), testDesiredWeight);
+	);
+	
+	public static run: () ==> ()
+ 	run() ==
+ 	(
+ 		new MilestoneTest().testConstructor();
+ 	);
+
 functions
 -- TODO Define functiones here
 traces
 -- TODO Define Combinatorial Test Traces here
-end MilestoneClass
+end MilestoneTest

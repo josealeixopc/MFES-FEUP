@@ -7,20 +7,29 @@ instance variables
 	
 	-- To import a type from another classe, use Class`Type (with the '`' character).
 	
-	c1 : Client := new Client("testEmail", "testPassword", "testName",
-														<F>, 1.1, 1, mk_Client`Date(1, 1, 1));
+	testEmail: seq of char := "testEmail";
+	testPassword: seq of char := "testPassword";
+	testName: seq of char := "testName";
+	testMobileNumber : int := 911911911;
+	testGender : Client`Sex := <F>;
+	testWeight: real := 65.0;
+	testHeight: int := 180;
+	testBirthDate: Client`Date := mk_Client`Date(1980, 2, 3);
+	
+	c1 : Client := new Client(testEmail, testPassword, testName, testGender, testWeight, testHeight, testBirthDate);
 	
 operations
 
 	private testConstructor: () ==> ()
 	testConstructor() == 
 	(
-		assertEquals(c1.getEmail(), "testEmail");
-		assertEquals(c1.getPassword(), "testPassword");
-		assertEquals(c1.getName(), "testName");
-		assertEquals(c1.getGender(), <F>);
-		assertEquals(c1.getWeight(), 1.1);
-		assertEquals(c1.getHeight(), 1);
+		assertEquals(c1.getEmail(), testEmail);
+		assertEquals(c1.getPassword(), testPassword);
+		assertEquals(c1.getName(), testName);
+		assertEquals(c1.getGender(), testGender);
+		assertEquals(c1.getWeight(), testWeight);
+		assertEquals(c1.getHeight(), testHeight);
+		-- TODO Calculate age from birth date
 	);
 	
 	private testSetters: () ==> ()

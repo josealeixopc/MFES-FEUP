@@ -1,12 +1,32 @@
-class ExerciseTest
+class ExerciseTest is subclass of Test
 types
 -- TODO Define types here
 values
 -- TODO Define values here
 instance variables
--- TODO Define instance variables here
+	
+	testName : seq of char := "testName";
+	testDescription: seq of char := "testDescription";
+	testBodyPart: Exercise`BodyPart := <Arm>;
+	
+	e1 : Exercise := new Exercise(testName, testDescription, testBodyPart);
+
 operations
--- TODO Define operations here
+
+	private testConstructor: () ==> ()
+	testConstructor() == 
+	(
+		assertEquals(e1.getName(), testName);
+		assertEquals(e1.getDescription(), testDescription);
+		assertEquals(e1.getBodyPart(), testBodyPart);
+	);
+	
+	public static run: () ==> ()
+ 	run() ==
+ 	(
+ 		new ExerciseTest().testConstructor();
+ 	);
+
 functions
 -- TODO Define functiones here
 traces

@@ -17,6 +17,8 @@ operations
  	(
  		ClientTest`run();
  		UserTest`run();
+ 		ExerciseTest`run();
+ 		MilestoneTest`run();
  	);
 		
 functions

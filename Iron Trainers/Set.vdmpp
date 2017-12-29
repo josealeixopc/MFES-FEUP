@@ -4,11 +4,66 @@ types
 values
 -- TODO Define values here
 instance variables
--- TODO Define instance variables here
+	series : seq of Series;
+	
 operations
--- TODO Define operations here
+	
+	public Set : seq of Series ==> Set
+	Set(s) == (
+		series := s;
+	);
+	
+	-- Verifies if an element s exists in seq. If so, returns true, else returns false.
+	public existsInSet : Series * seq of Series ==> bool
+	existsInSet(s, list) ==
+	
+		if len list = 0
+		then return false
+		
+		else if (s = hd list)
+		then return true
+		
+		else existsInSet(s, tl list);
+		
+	-- returns index of element in seq
+	public getIndex : Series * seq of Series * int ==> int
+	getIndex(s, list, index) ==
+	
+		if len list = 0
+		then return -1
+		
+		else if (s = hd list)
+		then return index
+		
+		else getIndex(s, tl list, index + 1);
+		
+	-- adds series to series
+	public addSeries : Series ==> ()
+	addSeries(s) ==
+		if existsInSet(s, series) = false
+		then series	:= series ^ [s];	
+		
+	
+	/*public removeSeries : Series ==> ()
+	removeSeries(s) ==
+	(
+		dcl i : int := getIndex(s, series, 0);
+		if i <> -1
+		then (
+			if i = 0
+			then series := tl series
+			
+			else if i = len series - 1
+			then series := [series(0)]
+			
+			else series := series(0, i-1) ^ series(i+1, len series - 1)
+		)
+	);*/
+	
 functions
--- TODO Define functiones here
+
+	
+		
 traces
 -- TODO Define Combinatorial Test Traces here
 end Set

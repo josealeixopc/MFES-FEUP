@@ -9,12 +9,28 @@ operations
 
 	-- fails if expected is not equal to actual	
 	protected assertEquals: ? * ? ==> ()
-	assertEquals(expected, actual) == return
-	pre expected = actual;
+	assertEquals(expected, actual) == 
+		if expected <> actual then
+		(
+			IO`print("Actual value(");
+			IO`print(actual);
+			IO`print(") different from expected (");
+			IO`print(expected);
+			IO`print(")\n");
+		)
+	post expected = actual;
 	
 	protected assertNotEquals: ? * ? ==> ()
-	assertNotEquals(expected, actual) == return
-	pre expected <> actual;
+	assertNotEquals(expected, actual) == 
+		if expected = actual then
+		(
+			IO`print("Actual value(");
+			IO`print(actual);
+			IO`print(") equal is equal to expected (");
+			IO`print(expected);
+			IO`print(") when it SHOULDN'T be.\n");
+		)
+	post expected <> actual;
 	
 	public static run: () ==> ()
  	run() ==

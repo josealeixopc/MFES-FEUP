@@ -1,12 +1,25 @@
-class TrainingPlanTest
+class TrainingPlanTest is subclass of Test
 types
 -- TODO Define types here
 values
 -- TODO Define values here
 instance variables
--- TODO Define instance variables here
+
+	
 operations
--- TODO Define operations here
+
+	private testConstructor: () ==> ()
+	testConstructor() == 
+	(
+		return;
+	);
+	
+	public static run: () ==> ()
+ 	run() ==
+ 	(
+ 		new TrainingPlanTest().testConstructor();
+ 	);
+ 	
 functions
 -- TODO Define functiones here
 traces

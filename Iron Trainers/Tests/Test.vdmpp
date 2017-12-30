@@ -28,6 +28,7 @@ operations
  		ExerciseTest`run();
  		SeriesTest`run();
  		SetTest`run();
+ 		TrainingPlanTest`run();
  		
  		IronTrainersTest`run();
  	);

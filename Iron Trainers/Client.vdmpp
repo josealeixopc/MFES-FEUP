@@ -29,32 +29,33 @@ operations
 		milestone := new Milestone(0.0);
 		User(e, p, n);
 	)
-	pre w > 0 and h > 0;
+	pre w > 0 and h > 0 
+	and d.month <= Utils`daysInMonth(d.month);
 	
-	-- get gender
+	-- Get gender
 	public getGender : () ==> Sex
 	getGender() == return gender
 	pre gender <> nil;
 	
-	--get weight
+	-- Get weight
 	public getWeight : () ==> real
 	getWeight() == return weight;
 	
-	-- get height
+	-- Get height
 	public getHeight : () ==> real
 	getHeight() == return height;
 	
-	-- set weight
+	-- Set weight
 	public setWeight : real ==> ()
 	setWeight(w) == weight := w
 	pre w > 0;
 	
-	--set height
+	-- Set height
 	public setHeight : nat ==> ()
 	setHeight(h) == height := h
 	pre h > 0;
 	
-	--get age
+	-- Get age
 	public getAge : () ==> nat
 	getAge() == return calculateAge(birthDate, Utils`getCurrentDate());
 	
@@ -67,7 +68,8 @@ functions
 	pre c.year > d.year and d.year > 0 
 		and c.month > 0 and c.month <= 12
 		and d.month > 0 and d.month <= 12
-		and c.day > 0 and c.day <= 31;
+		and c.day > 0 and c.day <= 31
+		and d.day > 0 and d.day <= 31;
 		
 traces
 -- TODO Define Combinatorial Test Traces here

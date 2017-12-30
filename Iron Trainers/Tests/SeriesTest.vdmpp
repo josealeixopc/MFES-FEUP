@@ -5,6 +5,8 @@ values
 -- TODO Define values here
 instance variables
 
+	kgToLbs : rat := 2.20462262;
+
 	testLoad: rat := 120.0;
 	testTime: nat := 60;
 	testRepetitions: nat1 := 5;
@@ -32,10 +34,17 @@ operations
 		assertEquals(s2.getExercise(), testExercise);
 	);
 	
+	private testFunctions: () ==> ()
+	testFunctions () ==
+	(
+		assertEquals(s1.convertFromKgToLbs(s1.getLoad()), testLoad * kgToLbs);
+	);
+	
 	public static run: () ==> ()
  	run() ==
  	(
  		new SeriesTest().testConstructor();
+ 		new SeriesTest().testFunctions();
  	);
 
 functions

@@ -2,7 +2,8 @@ class Series
 types
 -- TODO Define types here
 values
--- TODO Define values here
+
+	public oneKgToLbs = 2.20462262;
 
 instance variables
 	load : [rat];
@@ -49,7 +50,11 @@ operations
 	getExercise() == return exercise;
 	
 functions
--- TODO Define functiones here
+
+	public convertFromKgToLbs: rat -> rat
+	convertFromKgToLbs(kgWeight) == kgWeight * oneKgToLbs
+	pre kgWeight > 0;
+
 traces
 -- TODO Define Combinatorial Test Traces here
 end Series

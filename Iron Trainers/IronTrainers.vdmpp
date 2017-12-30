@@ -1,22 +1,13 @@
 class IronTrainers
 types
-	public String = seq of char;
-	
-	public Date:: 
-	day : nat1
-	month: nat1
-	year : nat
-	inv d == d.month > 0 and d.month <= 12 
-		and d.day > 0 and d.day <= 31
-		and d.year > 1900;
 	
 values
-	private currentDate = mk_Date(3, 1, 2018);
 
 instance variables
 	clients : set of Client;
 	trainers : set of Trainer;
-	allUsers : set of String;
+	allUsers : set of Utils`MyString;
+	user : Utils`MyString;
 	
 operations
 
@@ -25,10 +16,28 @@ operations
 		clients := {};
 		trainers := {};
 		allUsers := {};
+		user := "undefined";
 	);
 	
+	-- Login in the application
+	public login : Utils`MyString ==> bool
+	login(name) == 
+		if user = "undefined"
+		then (
+			user := name;
+			return true;
+		)
+		else return false		
+	pre len name > 0 and len name < 50;
+	
+	-- Logout from the application
+	public logout : () ==> ()
+	logout() ==
+		user := "undefined"
+	pre user <> "undefined";
+			
 	-- Returns all users
-	public getAllUsers : () ==> set of String
+	public getAllUsers : () ==> set of Utils`MyString
 	getAllUsers() == return allUsers;
 	
 	-- Returns all registered clients
@@ -42,8 +51,10 @@ operations
 	-- Adds client to registered clients. If can't add client, it returns false
 	public addClient : Client ==> ()
 	addClient(client) == (
-		clients := clients union {client};
-		allUsers := allUsers union {client.getEmail()};
+		atomic(
+			clients := clients union {client};
+			allUsers := allUsers union {client.getEmail()}
+		);
 	)
 	pre client not in set clients and client.getEmail() not in set allUsers
 	post client in set clients;
@@ -51,8 +62,10 @@ operations
 	-- Removes client from registered clients
 	public removeClient : Client ==> ()
 	removeClient(client) == (
-		clients := clients \ {client};
-		allUsers := allUsers \ {client.getEmail()}
+		atomic(
+			clients := clients \ {client};
+			allUsers := allUsers \ {client.getEmail()}
+		);
 	)
 	pre client in set clients and client.getEmail() in set allUsers
 	post client not in set clients;
@@ -60,8 +73,10 @@ operations
 	-- Adds trainer to trainers. If can't add trainer, it returns false
 	public addTrainer : Trainer ==> ()
 	addTrainer(trainer) == (
-		trainers := trainers union {trainer};
-		allUsers := allUsers union {trainer.getEmail()};
+		atomic(
+			trainers := trainers union {trainer};
+			allUsers := allUsers union {trainer.getEmail()};
+		);
 	)
 	pre trainer not in set trainers and trainer.getEmail() not in set allUsers
 	post trainer in set trainers;
@@ -70,17 +85,13 @@ operations
 	public removeTrainer : Trainer ==> ()
 	removeTrainer(trainer) ==
 	(
-		trainers := trainers \ {trainer};
-		allUsers := allUsers \ {trainer.getEmail()};
+		atomic(
+			trainers := trainers \ {trainer};
+			allUsers := allUsers \ {trainer.getEmail()};
+		);
 	)
 	pre ({trainer} subset trainers) = true and trainer.getEmail() in set allUsers
 	post ({trainer} subset trainers) = false;
-	
-	public static getCurrentDate: () ==> Date
-	getCurrentDate() ==
-	(
-		return currentDate;
-	);
 		
 functions
 -- TODO Define functiones here

@@ -1,0 +1,30 @@
+class Utils
+types
+	public MyString = seq1 of char;
+	
+	public Date:: 
+		day : nat1
+		month: nat1
+		year : nat
+		inv d == d.month > 0 and d.month <= 12 
+			and d.day > 0 and d.day <= 31
+			and d.year > 1900;
+
+values
+	private currentDate = mk_Date(3, 1, 2018);
+	
+instance variables
+
+operations
+	
+	public static getCurrentDate: () ==> Date
+	getCurrentDate() ==
+	(
+		return currentDate;
+	);
+	
+functions
+-- TODO Define functiones here
+traces
+-- TODO Define Combinatorial Test Traces here
+end Utils

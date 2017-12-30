@@ -17,10 +17,20 @@ operations
 		assertEquals(m1.getDesiredWeight(), testDesiredWeight);
 	);
 	
+	private testSetters: () ==> () 
+	testSetters() ==
+	(
+		dcl testNewDesiredWeight : rat := 65.0;
+		
+		m1.setDesiredWeight(testNewDesiredWeight);
+		assertEquals(m1.getDesiredWeight(), testNewDesiredWeight);
+	);
+	
 	public static run: () ==> ()
  	run() ==
  	(
  		new MilestoneTest().testConstructor();
+ 		new MilestoneTest().testSetters();
  	);
 
 functions

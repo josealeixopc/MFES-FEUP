@@ -23,6 +23,7 @@ instance variables
 	testSeriesSequence : seq of Series := [testSeries1, testSeries2, testSeries3];
 	
 	s1 : Set := new Set(testSeriesSequence);
+	s2 : Set := new Set();
 
 operations
 
@@ -36,6 +37,8 @@ operations
 		assertEquals(s1.getSeries(), testSeriesSequence);
 				
 		assertEquals(s1.getIndex(testSeries4), -1);
+		
+		assertEquals(len s2.getSeries(), 0);
 	);
 	
 	private testAddSeries: () ==> ()

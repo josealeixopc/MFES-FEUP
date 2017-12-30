@@ -11,7 +11,7 @@ types
 		and d.year > 1900;
 	
 values
-	private currentDate = mk_Date(3, 1, 2018);
+	private static currentDate = mk_Date(3, 1, 2018);
 
 instance variables
 	clients : set of Client;
@@ -27,16 +27,22 @@ operations
 		allUsers := {};
 	);
 	
+	/*
+	*	A 'pure' operation is an operation which does no affect the state of its object nor of any other. It is referentially transparent.
+	* A 'read-only' operation, such as a getter, can be considered pure.
+	* Making a getter 'pure' is the only way to keep instance variables private and also use their value on pre/post-conditions.
+	*/
+	
 	-- Returns all users
-	public getAllUsers : () ==> set of String
+	pure public getAllUsers : () ==> set of String
 	getAllUsers() == return allUsers;
 	
 	-- Returns all registered clients
-	public getClients : () ==> set of Client
+	pure public getClients : () ==> set of Client
 	getClients() == return clients;
 	
 	-- Returns all trainers
-	public getTrainers : () ==> set of Trainer
+	pure public getTrainers : () ==> set of Trainer
 	getTrainers() == return trainers;
 
 	-- Adds client to registered clients. If can't add client, it returns false

@@ -1,0 +1,35 @@
+class TestCases is subclass of Test
+
+/*
+* Class which includes all test cases for the mandatory requirements of the app.
+*/
+
+operations
+
+/*** USE CASE SCNEARIO R0: Initial configuration ***/
+-- The app initially has no clients and only one registered trainer account.
+
+	private initialConfigScn : Trainer ==> IronTrainers
+	initialConfigScn(trainer) ==
+	(
+		dcl it : IronTrainers := new IronTrainers();
+		it.addTrainer(trainer);
+		return it;
+	)
+	post (RESULT.getTrainers() = {trainer} and
+				RESULT.getClients() = {} and
+				card RESULT.getAllUsers() = 1);
+
+/*** USE CASE SCENARIO R1: Register ***/
+-- A user may register as a Client using an email and a password, and providing the profile information.
+
+
+	public static run: () ==> ()
+ 	run() ==
+ 	(
+ 		dcl it1 : IronTrainers := new TestCases().initialConfigScn(new Trainer("diogo@gmail.com", "pass123", "Diogo"));
+ 		
+ 		assertEquals(it1.getAllUsers(), {"diogo@gmail.com"});
+ 	);
+
+end TestCases

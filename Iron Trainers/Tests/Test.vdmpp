@@ -8,7 +8,7 @@ instance variables
 operations
 
 	-- fails if expected is not equal to actual	
-	protected assertEquals: ? * ? ==> ()
+	protected static assertEquals: ? * ? ==> ()
 	assertEquals(expected, actual) == 
 		if expected <> actual then
 		(
@@ -20,7 +20,7 @@ operations
 		)
 	post expected = actual;
 	
-	protected assertNotEquals: ? * ? ==> ()
+	protected static assertNotEquals: ? * ? ==> ()
 	assertNotEquals(expected, actual) == 
 		if expected = actual then
 		(
@@ -47,6 +47,8 @@ operations
  		TrainingPlanTest`run();
  		
  		IronTrainersTest`run();
+ 		
+ 		TestCases`run();
  	);
 		
 functions

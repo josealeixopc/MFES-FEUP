@@ -35,7 +35,7 @@ operations
 		and (m div 10**8) = 9;	-- begins with 9
 
 	-- Get email of user
-	public getEmail : () ==> String
+	pure public getEmail : () ==> String
 	getEmail() == return email;
 	
 	-- Get password of user

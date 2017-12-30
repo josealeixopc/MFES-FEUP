@@ -1,41 +1,72 @@
 class IronTrainers
 types
--- TODO Define types here
+	public String = seq of char;
+	
 values
 -- TODO Define values here
+
 instance variables
-	users : set of Client := {};
-	trainers : set of Trainer := {};
+	clients : set of Client;
+	trainers : set of Trainer;
+	allUsers : set of String;
 	
 operations
 
-	-- Adds user to registered users
-	public addUser : Client ==> ()
-	addUser(user) ==
-		users := users union {user}
-		pre user not in set users
-		post user in set users;
+	public IronTrainers : () ==> IronTrainers
+	IronTrainers() == (
+		clients := {};
+		trainers := {};
+		allUsers := {};
+	);
+	
+	-- Returns all users
+	public getAllUsers : () ==> set of String
+	getAllUsers() == return allUsers;
+	
+	-- Returns all registered clients
+	public getClients : () ==> set of Client
+	getClients() == return clients;
+	
+	-- Returns all trainers
+	public getTrainers : () ==> set of Trainer
+	getTrainers() == return trainers;
+
+	-- Adds client to registered clients. If can't add client, it returns false
+	public addClient : Client ==> ()
+	addClient(client) == (
+		clients := clients union {client};
+		allUsers := allUsers union {client.getEmail()};
+	)
+	pre client not in set clients and client.getEmail() not in set allUsers
+	post client in set clients;
 		
-	-- Removes user from registered users
-	public removeUser : Client ==> ()
-	removeUser(user) ==
-		users := users \ {user}
-		pre user in set users
-		post user not in set users;
+	-- Removes client from registered clients
+	public removeClient : Client ==> ()
+	removeClient(client) == (
+		clients := clients \ {client};
+		allUsers := allUsers \ {client.getEmail()}
+	)
+	pre client in set clients and client.getEmail() in set allUsers
+	post client not in set clients;
 		
-	-- Adds trainer to trainers
+	-- Adds trainer to trainers. If can't add trainer, it returns false
 	public addTrainer : Trainer ==> ()
-	addTrainer(trainer) ==
-		trainers := trainers union {trainer}
-		pre trainer not in set trainers
-		post trainer in set trainers;
+	addTrainer(trainer) == (
+		trainers := trainers union {trainer};
+		allUsers := allUsers union {trainer.getEmail()};
+	)
+	pre trainer not in set trainers and trainer.getEmail() not in set allUsers
+	post trainer in set trainers;
 		
 	-- Removes trainer from trainers
 	public removeTrainer : Trainer ==> ()
 	removeTrainer(trainer) ==
-		trainers := trainers \ {trainer}
-		pre ({trainer} subset trainers) <> true
-		post ({trainer} subset trainers) <> false;
+	(
+		trainers := trainers \ {trainer};
+		allUsers := allUsers \ {trainer.getEmail()};
+	)
+	pre ({trainer} subset trainers) = true and trainer.getEmail() in set allUsers
+	post ({trainer} subset trainers) = false;
 		
 functions
 -- TODO Define functiones here

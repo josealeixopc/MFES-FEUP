@@ -4,9 +4,73 @@ types
 values
 -- TODO Define values here
 instance variables
--- TODO Define instance variables here
+	
+	e1 : IronTrainers := new IronTrainers();
+	
 operations
--- TODO Define operations here
+
+	private testConstructor: () ==> ()
+	testConstructor() == 
+	(
+		assertEquals(e1.getClients(), {});
+		assertEquals(e1.getTrainers(), {});
+		
+	);
+	
+	private testClient: () ==> ()
+	testClient() == 
+	(
+		dcl testEmail: seq of char := "testEmail";
+		dcl testPassword: seq of char := "testPassword";
+		dcl testName: seq of char := "testName";
+		dcl testGender : Client`Sex := <F>;
+		dcl testWeight: real := 65.0;
+		dcl testHeight: int := 180;
+		dcl testBirthDate: Client`Date := mk_Client`Date(2, 3, 1980);
+		
+		dcl c1 : Client := new Client(testEmail, testPassword, testName, testGender, testWeight, testHeight, testBirthDate);
+		
+		e1.addClient(c1);
+		
+		assertEquals(e1.getClients(), {c1});
+		assertEquals(e1.getAllUsers(), {c1.getEmail()});
+		
+		e1.removeClient(c1);
+		
+		assertEquals(e1.getClients(), {});
+		assertEquals(e1.getAllUsers(), {});
+		
+	);
+	
+	private testTrainer: () ==> ()
+	testTrainer() == 
+	(
+		dcl testEmail: seq of char := "testEmail";
+		dcl testPassword: seq of char := "testPassword";
+		dcl testName: seq of char := "testName";
+		
+		dcl t1 : Trainer := new Trainer(testEmail, testPassword, testName);
+		
+		e1.addTrainer(t1);
+		
+		assertEquals(e1.getTrainers(), {t1});
+		assertEquals(e1.getAllUsers(), {t1.getEmail()});
+		
+		e1.removeTrainer(t1);
+		
+		assertEquals(e1.getTrainers(), {});
+ 		assertEquals(e1.getAllUsers(), {});
+		
+	);
+	
+	public static run: () ==> ()
+ 	run() ==
+ 	(
+ 		new IronTrainersTest().testConstructor();
+ 		new IronTrainersTest().testClient();
+ 		new IronTrainersTest().testTrainer();
+ 	);
+ 	
 functions
 -- TODO Define functiones here
 traces

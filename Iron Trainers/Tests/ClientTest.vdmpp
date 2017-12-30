@@ -12,11 +12,13 @@ instance variables
 	testName: seq of char := "testName";
 	testMobileNumber : int := 911911911;
 	testGender : Client`Sex := <F>;
+	testGender2 : Client`Sex := <M>;
 	testWeight: real := 65.0;
 	testHeight: int := 180;
 	testBirthDate: Client`Date := mk_Client`Date(2, 3, 1980);
 	
 	c1 : Client := new Client(testEmail, testPassword, testName, testGender, testWeight, testHeight, testBirthDate);
+	c2 : Client := new Client(testEmail, testPassword, testName, testGender2, testWeight, testHeight, testBirthDate);
 	
 operations
 

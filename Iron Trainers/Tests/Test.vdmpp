@@ -28,6 +28,8 @@ operations
  		ExerciseTest`run();
  		SeriesTest`run();
  		SetTest`run();
+ 		
+ 		IronTrainersTest`run();
  	);
 		
 functions

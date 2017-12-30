@@ -7,7 +7,7 @@ instance variables
 
 operations
 
-	public Trainer : String * String * String ==> Trainer
+	public Trainer : Utils`MyString * Utils`MyString * Utils`MyString ==> Trainer
 	Trainer(e, p, n) == (
 		User(e, p, n);
 	);

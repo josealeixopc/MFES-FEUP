@@ -63,12 +63,48 @@ operations
 		
 	);
 	
+	private testDuplicateTrainerEmails: () ==> ()
+	testDuplicateTrainerEmails() ==
+	(
+		dcl testEmail: seq of char := "testEmail";
+		dcl testPassword: seq of char := "testPassword";
+		dcl testName: seq of char := "testName";
+		
+		dcl t1 : Trainer := new Trainer(testEmail, testPassword, testName);
+		dcl t2 : Trainer := new Trainer(testEmail, testPassword, testName);
+		
+		e1.addTrainer(t1);
+		e1.addTrainer(t2);
+	);
+
+	private testDuplicateUserEmails: () ==> ()
+	testDuplicateUserEmails() ==
+	(
+		dcl testEmail: seq of char := "testEmail";
+		dcl testPassword: seq of char := "testPassword";
+		dcl testName: seq of char := "testName";
+		dcl testGender : Client`Sex := <F>;
+		dcl testWeight: real := 65.0;
+		dcl testHeight: int := 180;
+		dcl testBirthDate: Client`Date := mk_Client`Date(2, 3, 1980);
+		
+		dcl c1 : Client := new Client(testEmail, testPassword, testName, testGender, testWeight, testHeight, testBirthDate);
+		
+		dcl t1 : Trainer := new Trainer(testEmail, testPassword, testName);
+		
+		e1.addTrainer(t1);
+		e1.addClient(c1);
+	);
+	
 	public static run: () ==> ()
  	run() ==
  	(
  		new IronTrainersTest().testConstructor();
  		new IronTrainersTest().testClient();
  		new IronTrainersTest().testTrainer();
+ 		
+ 		--new IronTrainersTest().testDuplicateTrainerEmails();
+ 		--new IronTrainersTest().testDuplicateUserEmails();
  	);
  	
 functions

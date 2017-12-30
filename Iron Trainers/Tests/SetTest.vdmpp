@@ -54,6 +54,12 @@ operations
  		new SetTest().testConstructor();
  		new SetTest().testAddSeries();
  	);
+ 	
+ 	public getTestSet: () ==> Set
+	getTestSet() ==
+	(
+		return s1;
+	);
 
 functions
 -- TODO Define functiones here

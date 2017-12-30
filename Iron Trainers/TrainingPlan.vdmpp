@@ -10,16 +10,20 @@ operations
 
 	public TrainingPlan : () ==> TrainingPlan
 	TrainingPlan() == (
-		plan := { 1 |-> new Set()}; -- TODO ???
+		plan := { |-> }; -- empty map
 	);
+	
+	public getPlan : () ==> map nat1 to Set
+	getPlan() ==
+		return plan;
 	
 	public getDailyPlan : nat ==> Set
 	getDailyPlan(day) == 
 		return plan(day)
 		pre day > 0 and plan(day).getSeries() <> [];
 	
-	public setPlan : nat * Set ==> ()
-	setPlan(day, p) == 
+	public setDailyPlan : nat * Set ==> ()
+	setDailyPlan(day, p) == 
 		plan(day) := p
 		pre day > 0;
 	

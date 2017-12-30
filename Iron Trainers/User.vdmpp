@@ -32,8 +32,8 @@ operations
 	pre len e > 0 and len e < 256
 		and len p > 0 and len p < 30
 		and len n > 0 and len n < 50
-		and (m div 10**8) = 9;	-- begins with 9
-
+		and (m div 10**8) = 9;	-- begins with 9 and has 9 numbers
+	
 	-- Get email of user
 	pure public getEmail : () ==> String
 	getEmail() == return email;

@@ -50,7 +50,6 @@ operations
 	getMobileNumber() == return mobile;
 
 functions
-	
 
 traces
 -- TODO Define Combinatorial Test Traces here

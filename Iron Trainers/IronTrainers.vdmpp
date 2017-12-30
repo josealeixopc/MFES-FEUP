@@ -2,8 +2,16 @@ class IronTrainers
 types
 	public String = seq of char;
 	
+	public Date:: 
+	day : nat1
+	month: nat1
+	year : nat
+	inv d == d.month > 0 and d.month <= 12 
+		and d.day > 0 and d.day <= 31
+		and d.year > 1900;
+	
 values
--- TODO Define values here
+	private currentDate = mk_Date(3, 1, 2018);
 
 instance variables
 	clients : set of Client;
@@ -67,6 +75,12 @@ operations
 	)
 	pre ({trainer} subset trainers) = true and trainer.getEmail() in set allUsers
 	post ({trainer} subset trainers) = false;
+	
+	public static getCurrentDate: () ==> Date
+	getCurrentDate() ==
+	(
+		return currentDate;
+	);
 		
 functions
 -- TODO Define functiones here

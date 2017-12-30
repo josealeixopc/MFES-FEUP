@@ -96,12 +96,19 @@ operations
 		e1.addClient(c1);
 	);
 	
+	private testCurrentYear: () ==> ()
+	testCurrentYear() ==
+	(
+		assertEquals(IronTrainers`getCurrentDate(), mk_IronTrainers`Date(3, 1, 2018));
+	);
+	
 	public static run: () ==> ()
  	run() ==
  	(
  		new IronTrainersTest().testConstructor();
  		new IronTrainersTest().testClient();
  		new IronTrainersTest().testTrainer();
+ 		new IronTrainersTest().testCurrentYear();
  		
  		--new IronTrainersTest().testDuplicateTrainerEmails();
  		--new IronTrainersTest().testDuplicateUserEmails();

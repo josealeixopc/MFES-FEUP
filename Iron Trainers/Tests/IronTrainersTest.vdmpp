@@ -63,6 +63,65 @@ operations
 		
 	);
 	
+	private testClientLoginLogout: () ==> ()
+	testClientLoginLogout() == 
+	(
+		dcl testEmail: seq of char := "testEmail";
+		dcl testPassword: seq of char := "testPassword";
+		dcl testName: seq of char := "testName";
+		dcl testGender : Client`Sex := <F>;
+		dcl testWeight: real := 65.0;
+		dcl testHeight: int := 180;
+		dcl testBirthDate: Utils`Date := mk_Utils`Date(2, 3, 1980);
+		
+		dcl c1 : Client := new Client(testEmail, testPassword, testName, testGender, testWeight, testHeight, testBirthDate);
+		
+		e1.addClient(c1);
+		
+		-- Login
+		assertEquals(e1.login(testEmail), true);
+		assertEquals(e1.getUser(), testEmail);
+		assertEquals(e1.getCurrentClient(), c1);
+		
+		-- Logout
+		e1.logout();
+		assertEquals(e1.getUser(), "undefined");
+	);
+	
+	private testTrainerLoginLogout: () ==> ()
+	testTrainerLoginLogout() == 
+	(
+		dcl testEmail: seq of char := "testEmail";
+		dcl testPassword: seq of char := "testPassword";
+		dcl testName: seq of char := "testName";
+		
+		dcl t1 : Trainer := new Trainer(testEmail, testPassword, testName);
+		
+		e1.addTrainer(t1);
+		
+		-- Login
+		assertEquals(e1.login(testEmail), true);
+		assertEquals(e1.getUser(), testEmail);
+		
+		-- Logout
+		e1.logout();
+		assertEquals(e1.getUser(), "undefined");
+	);
+	
+	private testNotRegisterLoginLogout: () ==> ()
+	testNotRegisterLoginLogout() == 
+	(
+		dcl testEmail: seq of char := "testEmail";
+		
+		-- Login
+		assertEquals(e1.login(testEmail), false);
+		assertEquals(e1.getUser(), "undefined");
+		
+		-- Logout
+		e1.logout();
+		assertEquals(e1.getUser(), "undefined");
+	);
+	
 	private testDuplicateTrainerEmails: () ==> ()
 	testDuplicateTrainerEmails() ==
 	(
@@ -102,6 +161,35 @@ operations
 		assertEquals(Utils`getCurrentDate(), mk_Utils`Date(3, 1, 2018));
 	);
 	
+	private testMilestone: () ==> ()
+	testMilestone() == 
+	(
+		dcl testEmail: seq of char := "testEmail";
+		dcl testPassword: seq of char := "testPassword";
+		dcl testName: seq of char := "testName";
+		dcl testGender : Client`Sex := <F>;
+		dcl testWeight: real := 65.0;
+		dcl testHeight: int := 180;
+		dcl testBirthDate: Utils`Date := mk_Utils`Date(2, 3, 1980);
+		
+		dcl testDesiredWeight: real := 60.0;
+		
+		dcl c1 : Client := new Client(testEmail, testPassword, testName, testGender, testWeight, testHeight, testBirthDate);
+		
+		dcl m1 : Milestone := new Milestone(testDesiredWeight);
+		
+		e1.addClient(c1);
+		
+		assertEquals(e1.login(testEmail), true);
+		
+		-- Update Milestone
+		e1.updateDesiredWeight(testDesiredWeight);
+		assertEquals(e1.getCurrentClient(), c1);
+		assertEquals(e1.consultMilestone(e1.getUser()).getDesiredWeight(), testDesiredWeight);
+		--assertEquals(e1.consultMilestone(e1.getUser()).getTrainingPlan(), { |-> });
+
+	);
+	
 	public static run: () ==> ()
  	run() ==
  	(
@@ -109,7 +197,11 @@ operations
  		new IronTrainersTest().testClient();
  		new IronTrainersTest().testTrainer();
  		new IronTrainersTest().testCurrentYear();
+ 		new IronTrainersTest().testClientLoginLogout();
+ 		new IronTrainersTest().testTrainerLoginLogout();
+ 		new IronTrainersTest().testMilestone();
  		
+ 		--new IronTrainersTest().testNotRegisterLoginLogout();
  		--new IronTrainersTest().testDuplicateTrainerEmails();
  		--new IronTrainersTest().testDuplicateUserEmails();
  	);

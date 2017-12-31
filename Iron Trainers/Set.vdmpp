@@ -18,7 +18,7 @@ operations
 		series := [];
 	);
 	
-	pure public getSeries : () ==> seq of Series 
+	public getSeries : () ==> seq of Series 
 	getSeries() == return series;
 	
 	-- Verifies if an element s exists in seq. If so, returns its index, else returns -1.

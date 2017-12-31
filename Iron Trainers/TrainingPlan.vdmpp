@@ -20,7 +20,7 @@ operations
 	public getDailyPlan : nat ==> Set
 	getDailyPlan(day) == 
 		return plan(day)
-		pre day > 0 and plan(day).getSeries() <> [];
+		pre day > 0;
 	
 	public setDailyPlan : nat * Set ==> ()
 	setDailyPlan(day, p) == 

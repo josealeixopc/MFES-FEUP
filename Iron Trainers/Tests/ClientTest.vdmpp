@@ -31,7 +31,7 @@ operations
 		assertEquals(c1.getGender(), testGender);
 		assertEquals(c1.getWeight(), testWeight);
 		assertEquals(c1.getHeight(), testHeight);
-		-- TODO Calculate age from birth date
+		assertEquals(c1.getAge(), Utils`getCurrentDate().year - testBirthDate.year);
 	);
 	
 	private testSetters: () ==> ()
@@ -39,12 +39,17 @@ operations
 	(
 		dcl newHeight : nat  := 2;
 		dcl newWeight : real  := 1.2;
+		dcl newDesiredWeight : rat := 60.0;
 	
 		c1.setWeight(newWeight);
 		assertEquals(c1.getWeight(), newWeight);
 		
 		c1.setHeight(newHeight);
 		assertEquals(c1.getHeight(), newHeight);
+		
+		c1.getMilestone().setDesiredWeight(newDesiredWeight);
+		assertEquals(c1.getMilestone().getDesiredWeight(), newDesiredWeight);		
+		
 	);
 	
 	public static run: () ==> ()

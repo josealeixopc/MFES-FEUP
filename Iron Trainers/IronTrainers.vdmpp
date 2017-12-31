@@ -7,6 +7,7 @@ instance variables
 	clients : set of Client;
 	trainers : set of Trainer;
 	allUsers : set of Utils`MyString;
+	exercises : set of Exercise;
 	user : Utils`MyString;
 	
 operations
@@ -16,38 +17,113 @@ operations
 		clients := {};
 		trainers := {};
 		allUsers := {};
+		exercises := {};
 		user := "undefined";
 	);
 	
+	/*******************************************************/
+	/***************** 	 LOGIN & LOGOUT   ******************/
+	/*******************************************************/
+	
 	-- Login in the application
 	public login : Utils`MyString ==> bool
-	login(name) == 
+	login(email) == 
 		if user = "undefined"
 		then (
-			user := name;
+			user := email;
 			return true;
 		)
 		else return false		
-	pre len name > 0 and len name < 50;
+	pre len email > 0 and len email < 50 
+		and {email} inter allUsers <> {};
+	--TODO confirmar password !!!!!!
+
 	
 	-- Logout from the application
 	public logout : () ==> ()
 	logout() ==
 		user := "undefined"
-	pre user <> "undefined";
-			
+	pre not user = "undefined"
+		and {user} inter allUsers <> {};
+	
+	
+	/*******************************************************/
+	/********************	 MILESTONE  ********************/
+	/*******************************************************/
+	
+	-- A client updates its own desired weight
+	public updateDesiredWeight : rat ==> ()
+	updateDesiredWeight(r) ==
+		let cli = getClientByEmail(user)
+		in 
+			if isofclass(Client, cli)
+			then cli.getMilestone().setDesiredWeight(r)
+	pre userIsClient(user) = true;
+	
+	-- A client consults its own milestone
+	public consultMilestone : Utils`MyString ==> Milestone
+	consultMilestone(email) ==
+		let cli = getClientByEmail(email)
+		in 
+			if isofclass(Client, cli)
+			then return cli.getMilestone()
+			else return new Milestone()
+	pre userIsClient(email) or userIsTrainer(email);
+	
+	
+	/*******************************************************/
+	/********************	  USER  	********************/
+	/*******************************************************/
+	
 	-- Returns all users
 	public getAllUsers : () ==> set of Utils`MyString
 	getAllUsers() == return allUsers;
+	
+	-- Returns user
+	public getUser : () ==> Utils`MyString
+	getUser() == return user;
+	
+
+	/*******************************************************/
+	/********************	CLIENT 		********************/
+	/*******************************************************/
+	
+	-- Checks if user is a client
+	public pure userIsClient : Utils`MyString ==> bool
+	userIsClient(cli) == (
+		if cli = "undefined"
+		then return false
+		else (
+			for all c in set clients do (
+				if cli = c.getEmail()
+				then return true
+			);
+			return false;
+		)
+	);
+	
+	-- Gets client by email
+	public getClientByEmail : Utils`MyString ==> Client
+	getClientByEmail(cli) == (
+		for all c in set clients do (
+			if cli = c.getEmail()
+			then return c;
+		);
+		return new Client();
+	)
+	pre user <> "undefined" and userIsClient(cli);
+	
+	-- Gets current logged in user
+	public getCurrentClient : () ==> Client
+	getCurrentClient() == (
+		return getClientByEmail(user);
+	)
+	pre user <> "undefined" and userIsClient(user);
 	
 	-- Returns all registered clients
 	public getClients : () ==> set of Client
 	getClients() == return clients;
 	
-	-- Returns all trainers
-	public getTrainers : () ==> set of Trainer
-	getTrainers() == return trainers;
-
 	-- Adds client to registered clients. If can't add client, it returns false
 	public addClient : Client ==> ()
 	addClient(client) == (
@@ -56,7 +132,7 @@ operations
 			allUsers := allUsers union {client.getEmail()}
 		);
 	)
-	pre client not in set clients and client.getEmail() not in set allUsers
+	pre ({client} inter clients = {}) and client.getEmail() not in set allUsers
 	post client in set clients;
 		
 	-- Removes client from registered clients
@@ -69,6 +145,29 @@ operations
 	)
 	pre client in set clients and client.getEmail() in set allUsers
 	post client not in set clients;
+	
+	
+	/*******************************************************/
+	/********************	TRAINERS	********************/
+	/*******************************************************/
+	
+	-- Returns all trainers
+	public getTrainers : () ==> set of Trainer
+	getTrainers() == return trainers;
+	
+	-- Checks if current user if a trainer
+	public pure userIsTrainer : Utils`MyString ==> bool
+	userIsTrainer(email) == (
+		if user = "undefined"
+		then return false
+		else (
+			for all t in set trainers do (
+				if email = t.getEmail()
+				then return true
+			);
+			return false;
+		)
+	);
 		
 	-- Adds trainer to trainers. If can't add trainer, it returns false
 	public addTrainer : Trainer ==> ()
@@ -92,6 +191,27 @@ operations
 	)
 	pre ({trainer} subset trainers) = true and trainer.getEmail() in set allUsers
 	post ({trainer} subset trainers) = false;
+	
+	
+	/*******************************************************/
+	/********************	EXERCISES	********************/
+	/*******************************************************/
+	
+	-- Adds exercise to exercises set
+	public addExercise : Exercise ==> ()
+	addExercise(exercise) == (
+		exercises := exercises union {exercise}
+	)
+	pre not {exercise} subset exercises
+	post {exercise} subset exercises;
+	
+	-- Removes exercise from exercises set
+	public removeExercise : Exercise ==> ()
+	removeExercise(exercise) == (
+		exercises := exercises \ {exercise}
+	)
+	pre {exercise} subset exercises
+	post not {exercise} subset exercises;
 		
 functions
 -- TODO Define functiones here

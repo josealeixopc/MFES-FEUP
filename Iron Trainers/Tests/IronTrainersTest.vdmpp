@@ -186,8 +186,51 @@ operations
 		e1.updateDesiredWeight(testDesiredWeight);
 		assertEquals(e1.getCurrentClient(), c1);
 		assertEquals(e1.consultMilestone(e1.getUser()).getDesiredWeight(), testDesiredWeight);
-		--assertEquals(e1.consultMilestone(e1.getUser()).getTrainingPlan(), { |-> });
 
+	);
+	
+	private testExercise: () ==> ()
+	testExercise() == 
+	(
+		dcl testName: Utils`MyString := "Running";
+		dcl testDescription: Utils`MyString := "Running";
+		dcl testBodyPart1: Exercise`BodyPart := <Leg>;
+		dcl testBodyPart2: Exercise`BodyPart := <Arm>;
+		dcl testBodyPart3: Exercise`BodyPart := <Chest>;
+		dcl testBodyPart4: Exercise`BodyPart := <Back>;
+		
+		dcl ex1 : Exercise := new Exercise(testName, testDescription, testBodyPart1);
+		dcl ex2 : Exercise := new Exercise(testName, testDescription, testBodyPart2);
+		dcl ex3 : Exercise := new Exercise(testName, testDescription, testBodyPart3);
+		dcl ex4 : Exercise := new Exercise(testName, testDescription, testBodyPart4);
+		
+		-- Add exercises
+		e1.addExercise(ex1);
+		assertEquals(e1.getExercises(), {ex1});
+		
+		e1.addExercise(ex2);
+		assertEquals(e1.getExercises(), {ex1, ex2});
+		
+		e1.addExercise(ex3);
+		assertEquals(e1.getExercises(), {ex1, ex2, ex3});
+		
+		e1.addExercise(ex4);
+		assertEquals(e1.getExercises(), {ex1, ex2, ex3, ex4});
+		
+		-- Remove exercises
+		e1.removeExercise(ex4);
+		assertEquals(e1.getExercises(), {ex1, ex2, ex3});
+		
+		e1.removeExercise(ex3);
+		assertEquals(e1.getExercises(), {ex1, ex2});
+		
+		e1.removeExercise(ex2);
+		assertEquals(e1.getExercises(), {ex1});
+		
+		e1.removeExercise(ex1);
+		assertEquals(e1.getExercises(), {});
+		
+		-- TODO Add failures?
 	);
 	
 	public static run: () ==> ()
@@ -200,6 +243,7 @@ operations
  		new IronTrainersTest().testClientLoginLogout();
  		new IronTrainersTest().testTrainerLoginLogout();
  		new IronTrainersTest().testMilestone();
+ 		new IronTrainersTest().testExercise();
  		
  		--new IronTrainersTest().testNotRegisterLoginLogout();
  		--new IronTrainersTest().testDuplicateTrainerEmails();

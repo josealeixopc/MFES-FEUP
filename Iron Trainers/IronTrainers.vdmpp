@@ -204,6 +204,12 @@ operations
 	/********************	EXERCISES	********************/
 	/*******************************************************/
 	
+	-- Gets alls exercises in exercises set
+	public getExercises : () ==> set of Exercise
+	getExercises() == (
+		return exercises;
+	);
+	
 	-- Adds exercise to exercises set
 	public addExercise : Exercise ==> ()
 	addExercise(exercise) == (

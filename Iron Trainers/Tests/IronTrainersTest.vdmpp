@@ -17,8 +17,8 @@ operations
 		
 	);
 	
-	private testClient: () ==> ()
-	testClient() == 
+	private testCreateClient : () ==> Client
+	testCreateClient() == 
 	(
 		dcl testEmail: seq of char := "testEmail";
 		dcl testPassword: seq of char := "testPassword";
@@ -29,6 +29,58 @@ operations
 		dcl testBirthDate: Utils`Date := mk_Utils`Date(2, 3, 1980);
 		
 		dcl c1 : Client := new Client(testEmail, testPassword, testName, testGender, testWeight, testHeight, testBirthDate);
+		
+		return c1;
+	);
+	
+	private testCreateTrainer : () ==> Trainer
+	testCreateTrainer() == 
+	(
+		dcl testEmail: seq of char := "testEmailTrainer";
+		dcl testPassword: seq of char := "testPassword";
+		dcl testName: seq of char := "testNameTrainer";
+		
+		dcl t1 : Trainer := new Trainer(testEmail, testPassword, testName);
+		
+		return t1;
+	);
+	
+	private testAddExercises : () ==> ()
+	testAddExercises() ==
+	(
+		dcl testName: Utils`MyString := "Running";
+		dcl testName2: Utils`MyString := "Squats";
+		dcl testName3: Utils`MyString := "Jumps";
+		dcl testName4: Utils`MyString := "Cycling";
+		dcl testDescription: Utils`MyString := "Running";
+		dcl testBodyPart1: Exercise`BodyPart := <Leg>;
+		dcl testBodyPart2: Exercise`BodyPart := <Arm>;
+		dcl testBodyPart3: Exercise`BodyPart := <Chest>;
+		dcl testBodyPart4: Exercise`BodyPart := <Back>;
+		
+		dcl ex1 : Exercise := new Exercise(testName, testDescription, testBodyPart1);
+		dcl ex2 : Exercise := new Exercise(testName2, testDescription, testBodyPart2);
+		dcl ex3 : Exercise := new Exercise(testName3, testDescription, testBodyPart3);
+		dcl ex4 : Exercise := new Exercise(testName4, testDescription, testBodyPart4);
+		
+		-- Add exercises
+		e1.addExercise(ex1);
+		assertEquals(e1.getExercises(), {ex1});
+		
+		e1.addExercise(ex2);
+		assertEquals(e1.getExercises(), {ex1, ex2});
+		
+		e1.addExercise(ex3);
+		assertEquals(e1.getExercises(), {ex1, ex2, ex3});
+		
+		e1.addExercise(ex4);
+		assertEquals(e1.getExercises(), {ex1, ex2, ex3, ex4});
+	);
+	
+	private testClient: () ==> ()
+	testClient() == 
+	(
+		dcl c1 : Client := testCreateClient();
 		
 		e1.addClient(c1);
 		
@@ -44,12 +96,8 @@ operations
 	
 	private testTrainer: () ==> ()
 	testTrainer() == 
-	(
-		dcl testEmail: seq of char := "testEmail";
-		dcl testPassword: seq of char := "testPassword";
-		dcl testName: seq of char := "testName";
-		
-		dcl t1 : Trainer := new Trainer(testEmail, testPassword, testName);
+	(		
+		dcl t1 : Trainer := testCreateTrainer();
 		
 		e1.addTrainer(t1);
 		
@@ -67,14 +115,8 @@ operations
 	testClientLoginLogout() == 
 	(
 		dcl testEmail: seq of char := "testEmail";
-		dcl testPassword: seq of char := "testPassword";
-		dcl testName: seq of char := "testName";
-		dcl testGender : Client`Sex := <F>;
-		dcl testWeight: real := 65.0;
-		dcl testHeight: int := 180;
-		dcl testBirthDate: Utils`Date := mk_Utils`Date(2, 3, 1980);
 		
-		dcl c1 : Client := new Client(testEmail, testPassword, testName, testGender, testWeight, testHeight, testBirthDate);
+		dcl c1 : Client := testCreateClient();
 		
 		e1.addClient(c1);
 		
@@ -91,11 +133,9 @@ operations
 	private testTrainerLoginLogout: () ==> ()
 	testTrainerLoginLogout() == 
 	(
-		dcl testEmail: seq of char := "testEmail";
-		dcl testPassword: seq of char := "testPassword";
-		dcl testName: seq of char := "testName";
+		dcl testEmail: seq of char := "testEmailTrainer";
 		
-		dcl t1 : Trainer := new Trainer(testEmail, testPassword, testName);
+		dcl t1 : Trainer := testCreateTrainer();
 		
 		e1.addTrainer(t1);
 		
@@ -165,27 +205,34 @@ operations
 	testMilestone() == 
 	(
 		dcl testEmail: seq of char := "testEmail";
-		dcl testPassword: seq of char := "testPassword";
-		dcl testName: seq of char := "testName";
-		dcl testGender : Client`Sex := <F>;
-		dcl testWeight: real := 65.0;
-		dcl testHeight: int := 180;
-		dcl testBirthDate: Utils`Date := mk_Utils`Date(2, 3, 1980);
+		dcl testEmail2: seq of char := "testEmailTrainer";
 		
 		dcl testDesiredWeight: real := 60.0;
 		
-		dcl c1 : Client := new Client(testEmail, testPassword, testName, testGender, testWeight, testHeight, testBirthDate);
-		
-		--dcl m1 : Milestone := new Milestone(testDesiredWeight);
-		
+		dcl c1 : Client := testCreateClient();
+		dcl t1 : Trainer := testCreateTrainer();
+				
 		e1.addClient(c1);
+		e1.addTrainer(t1);
 		
+		-- Login with client account
 		assertEquals(e1.login(testEmail), true);
 		
 		-- Update Milestone
 		e1.updateDesiredWeight(testDesiredWeight);
 		assertEquals(e1.getCurrentClient(), c1);
 		assertEquals(e1.consultMilestone(e1.getUser()).getDesiredWeight(), testDesiredWeight);
+		
+		e1.logout();
+		
+		-- Login with trainer account
+		assertEquals(e1.login(testEmail2), true);
+		
+		-- Consult Training plan
+		assertEquals(e1.consultMilestone(testEmail).getTrainingPlan().getPlan(), { |-> });
+		
+		-- Add training Plan
+		assertEquals(e1.consultMilestone(testEmail).getTrainingPlan().getPlan(), { |-> });
 
 	);
 	
@@ -233,6 +280,59 @@ operations
 		-- TODO Add failures?
 	);
 	
+	private testDailyPlan: () ==> ()
+	testDailyPlan() == 
+	(
+	
+		dcl s1 : Set := e1.createSet();
+		dcl s2 : Set := e1.createSet();
+		dcl series1 : Series;
+		dcl series2 : Series;
+		dcl ex1 : Exercise;
+		dcl ex2 : Exercise;
+		
+		dcl testEmail: seq of char := "testEmail";
+		dcl testEmailTrainer: seq of char := "testEmailTrainer";
+		
+		
+		dcl c1 : Client := testCreateClient();
+		dcl t1 : Trainer := testCreateTrainer();
+		
+		e1.addClient(c1);
+		e1.addTrainer(t1);
+		
+		testAddExercises();
+		
+		-- Login
+		assertEquals(e1.login(testEmailTrainer), true);
+		
+		-- Create Set Load
+		ex1 := e1.getExercise("Running");
+		series1 := e1.createSeriesTime(1, ex1, 60);
+		
+		e1.addSeriesToSet(s1, series1);
+		
+		e1.setDailyPlan(testEmail, 1, s1);
+		assertEquals(e1.getDailyPlan(testEmail, 1), s1);
+		
+		-- Create Set Time
+		ex2 := e1.getExercise("Squats");
+		series2 := e1.createSeriesLoad(10.0, 10, ex2);
+		
+		e1.addSeriesToSet(s2, series2);
+		
+		e1.setDailyPlan(testEmail, 2, s2);
+		assertEquals(e1.getDailyPlan(testEmail, 2), s2);
+		
+		e1.logout();
+		
+		-- Login with client account
+		assertEquals(e1.login(testEmail), true);
+		assertEquals(e1.getDailyPlan(testEmail, 2), s2);
+		
+		-- TODO Add failures?
+	);
+	
 	public static run: () ==> ()
  	run() ==
  	(
@@ -244,6 +344,7 @@ operations
  		new IronTrainersTest().testTrainerLoginLogout();
  		new IronTrainersTest().testMilestone();
  		new IronTrainersTest().testExercise();
+ 		new IronTrainersTest().testDailyPlan();
  		
  		--new IronTrainersTest().testNotRegisterLoginLogout();
  		--new IronTrainersTest().testDuplicateTrainerEmails();

@@ -21,6 +21,13 @@ operations
 		user := "undefined";
 	);
 	
+	/*
+	*	A 'pure' operation is an operation which does no affect the state of its object nor of any other. It is referentially transparent.
+	* A 'read-only' operation, such as a getter, can be considered pure.
+	* Making a getter 'pure' is the only way to keep instance variables private and also use their value on pre/post-conditions.
+	*/
+
+	
 	/*******************************************************/
 	/***************** 	 LOGIN & LOGOUT   ******************/
 	/*******************************************************/
@@ -76,7 +83,7 @@ operations
 	/*******************************************************/
 	
 	-- Returns all users
-	public getAllUsers : () ==> set of Utils`MyString
+	pure public getAllUsers : () ==> set of Utils`MyString
 	getAllUsers() == return allUsers;
 	
 	-- Returns user
@@ -121,7 +128,7 @@ operations
 	pre user <> "undefined" and userIsClient(user);
 	
 	-- Returns all registered clients
-	public getClients : () ==> set of Client
+	pure public getClients : () ==> set of Client
 	getClients() == return clients;
 	
 	-- Adds client to registered clients. If can't add client, it returns false
@@ -152,7 +159,7 @@ operations
 	/*******************************************************/
 	
 	-- Returns all trainers
-	public getTrainers : () ==> set of Trainer
+	pure public getTrainers : () ==> set of Trainer
 	getTrainers() == return trainers;
 	
 	-- Checks if current user if a trainer

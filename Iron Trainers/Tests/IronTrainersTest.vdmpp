@@ -176,7 +176,7 @@ operations
 		
 		dcl c1 : Client := new Client(testEmail, testPassword, testName, testGender, testWeight, testHeight, testBirthDate);
 		
-		dcl m1 : Milestone := new Milestone(testDesiredWeight);
+		--dcl m1 : Milestone := new Milestone(testDesiredWeight);
 		
 		e1.addClient(c1);
 		

@@ -6,8 +6,8 @@ This project consists on a Java command line application which uses the model ge
 
 ## Prerequisites
 
-To build this project you must have Gradle and JDK installed.
+<!--complete-->
 
 ## Running
 
-Once you have installed, simply execute `gradle run` on this directory to get the application started. 
+<!--complete-->

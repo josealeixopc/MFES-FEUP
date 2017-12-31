@@ -7,4 +7,4 @@ repositories {
     mavenCentral() 
 }
 
-mainClassName = 'gui.CommandLineInterface' 
+mainClassName = 'src.main.java.gui.CommandLineInterface' 

@@ -25,7 +25,7 @@ operations
 	pre len n > 0 and len n < 50
 		and len d > 0 and len d < 250;
 	
-	public getName : () ==> Utils`MyString
+	public pure getName : () ==> Utils`MyString
 	getName() == return name;
 	
 	public getDescription : () ==> Utils`MyString

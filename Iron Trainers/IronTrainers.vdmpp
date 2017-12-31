@@ -75,8 +75,10 @@ operations
 			if isofclass(Client, cli)
 			then return cli.getMilestone()
 			else return new Milestone()
-	pre userIsClient(email) or userIsTrainer(email);
-	
+	pre userIsClient(user) or userIsTrainer(user);
+
+	-- A trainer adds a training plan to a milestone of an user
+	-- TODO
 	
 	/*******************************************************/
 	/********************	  USER  	********************/
@@ -204,6 +206,33 @@ operations
 	/********************	EXERCISES	********************/
 	/*******************************************************/
 	
+	-- Gets alls exercises in exercises set
+	public getExercises : () ==> set of Exercise
+	getExercises() == (
+		return exercises;
+	);
+	
+	-- Checks if exercise exists
+	public pure exerciseExists : Utils`MyString ==> bool
+	exerciseExists(name) == (
+		for all ex in set exercises do (
+			if (name = ex.getName())
+			then return true;
+		);
+		return false;
+	);
+	
+	-- Gets exercise in exercises set by name
+	public getExercise : Utils`MyString ==> Exercise
+	getExercise(name) == (
+		for all ex in set exercises do (
+			if (name = ex.getName())
+			then return ex;
+		);
+		return new Exercise();
+	)
+	pre exerciseExists(name);
+	
 	-- Adds exercise to exercises set
 	public addExercise : Exercise ==> ()
 	addExercise(exercise) == (
@@ -219,7 +248,66 @@ operations
 	)
 	pre {exercise} subset exercises
 	post not {exercise} subset exercises;
-		
+	
+	
+	/*******************************************************/
+	/******************		SERIES		********************/
+	/*******************************************************/
+	
+	-- Creates a series (load)
+	public createSeriesLoad : rat * nat1 * Exercise ==> Series
+	createSeriesLoad(l, r, e) == (
+		return new Series(l, r, e);
+	);
+	
+	-- Creates a series (time)
+	public createSeriesTime : nat1 * Exercise * nat ==> Series
+	createSeriesTime(r, e, t) == (
+		return new Series(r, e, t);
+	);
+	
+	/*******************************************************/
+	/********************      SET     *********************/
+	/*******************************************************/
+	
+	-- Creates a set
+	public createSet : () ==> Set
+	createSet() == (
+		return new Set();
+	);
+	
+	-- Add series to set
+	public addSeriesToSet : Set * Series ==> ()
+	addSeriesToSet(s, srs) ==
+		s.addSeries(srs);
+	
+	/*******************************************************/
+	/******************	 TRAINING PLAN	********************/
+	/*******************************************************/
+	
+	-- A trainer creates a daily plan to add to the training plan of a client
+	public setDailyPlan : Utils`MyString * nat * Set==> ()
+	setDailyPlan(email, day, s) == (
+		let cli = getClientByEmail(email)
+		in 
+			(
+				cli.getMilestone().getTrainingPlan().setDailyPlan(day, s);
+			)
+	)
+	pre userIsClient(email) and userIsTrainer(user);
+	
+	-- A trainer consults a daily plan of the training plan of a client
+	public getDailyPlan : Utils`MyString * nat==> Set
+	getDailyPlan(email, day) == (
+		let cli = getClientByEmail(email)
+		in 
+			(
+				return cli.getMilestone().getTrainingPlan().getDailyPlan(day);
+			)
+	)
+	pre userIsClient(email) and ( userIsTrainer(user) or userIsClient(user));
+
+
 functions
 -- TODO Define functiones here
 traces

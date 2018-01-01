@@ -1,6 +1,8 @@
 package com.mfes.gui;
 
+import com.mfes.model.Client;
 import com.mfes.model.IronTrainers;
+import com.mfes.model.MyUtils;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -79,21 +81,6 @@ public class CLI {
 
         String email;
         String password;
-        Float weight;
-
-        Field emailField = new Field(this.scanner, "Email") {
-            @Override
-            protected boolean canInputBeParsed() {
-                return true;    // any string is a string
-            }
-        };
-
-        Field passwordField = new Field(this.scanner, "Password") {
-            @Override
-            protected boolean canInputBeParsed() {
-                return true;    // any string is a string
-            }
-        };
 
         ArrayList<Field> fields = new ArrayList<>();
         fields.add(emailField);
@@ -113,10 +100,69 @@ public class CLI {
 
             /* Do something with input*/
 
-
             clientMenu.show();  // go to next menu
         }
-
-
     }
+
+    private void showRegisterFrom(){
+        String email;
+        String password;
+        String name;
+        char gender;
+        float weight;
+        int height;
+        MyUtils.Date birthDate;
+
+        ArrayList<Field> fields = new ArrayList<>();
+        fields.add(emailField);
+        fields.add(passwordField);
+
+
+        Client newClient = new Client(email, password, name, gender, weight, height, birthDate);
+    }
+
+    private Field emailField = new Field(scanner, "Email") {
+        @Override
+        protected boolean canInputBeParsed() {
+            return true;    // any string is a string
+        }
+    };
+
+    private Field passwordField = new Field(scanner, "Password") {
+        @Override
+        protected boolean canInputBeParsed() {
+            return true;    // any string is a string
+        }
+    };
+
+    private Field nameField = new Field(scanner, "Name") {
+        @Override
+        protected boolean canInputBeParsed() {
+            return true;    // any string is a string
+        }
+    };
+
+    private Field genderField = new Field(scanner, "Gender (M or F)") {
+        @Override
+        protected boolean canInputBeParsed() {
+            if(this.input.equalsIgnoreCase("M") || this.input.equalsIgnoreCase("F")){
+                return true;
+            }
+
+            return false;
+        }
+    };
+
+    private Field weightField = new Field(scanner, "Weight"){
+
+        @Override
+        protected boolean canInputBeParsed() {
+            try{
+                Float.parseFloat(this.input);
+                return true;
+            }catch (Exception e){
+                return false;
+            }
+        }
+    };
 }

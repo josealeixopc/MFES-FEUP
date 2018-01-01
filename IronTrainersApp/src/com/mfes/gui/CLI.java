@@ -1,12 +1,14 @@
 package com.mfes.gui;
 
+import com.mfes.model.IronTrainers;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class CLI {
 
     private Scanner scanner;
-    // ADD IRON TRAINERS MEMBER
+    private IronTrainers ironTrainers;
 
     // MENUS
     private Menu initialMenu;
@@ -14,7 +16,8 @@ public class CLI {
 
 
     CLI() {
-        scanner = new Scanner(System.in);
+        this.scanner = new Scanner(System.in);
+        this.ironTrainers = new IronTrainers();
 
         createMenus();
     }

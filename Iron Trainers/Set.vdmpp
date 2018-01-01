@@ -1,4 +1,4 @@
-class Set
+class MySet
 types
 -- TODO Define types here
 values
@@ -8,13 +8,13 @@ instance variables
 	
 operations
 	
-	public Set : seq of Series ==> Set
-	Set(s) == (
+	public MySet : seq of Series ==> MySet
+	MySet(s) == (
 		series := s;
 	);
 	
-	public Set : () ==> Set
-	Set() == (
+	public MySet : () ==> MySet
+	MySet() == (
 		series := [];
 	);
 	
@@ -70,4 +70,4 @@ functions
 		
 traces
 -- TODO Define Combinatorial Test Traces here
-end Set
+end MySet

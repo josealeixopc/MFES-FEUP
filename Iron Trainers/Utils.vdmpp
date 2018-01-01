@@ -1,4 +1,4 @@
-class Utils
+class MyUtils
 types
 	public MyString = seq1 of char;
 	
@@ -41,4 +41,4 @@ functions
 -- TODO Define functiones here
 traces
 -- TODO Define Combinatorial Test Traces here
-end Utils
+end MyUtils

@@ -6,9 +6,9 @@ values
 instance variables
 	clients : set of Client;
 	trainers : set of Trainer;
-	allUsers : set of Utils`MyString;
+	allUsers : set of MyUtils`MyString;
 	exercises : set of Exercise;
-	user : Utils`MyString;
+	user : MyUtils`MyString;
 	
 operations
 
@@ -33,7 +33,7 @@ operations
 	/*******************************************************/
 	
 	-- Login in the application
-	public login : Utils`MyString ==> bool
+	public login : MyUtils`MyString ==> bool
 	login(email) == 
 		if user = "undefined"
 		then (
@@ -68,7 +68,7 @@ operations
 	pre userIsClient(user) = true;
 	
 	-- A client consults its own milestone
-	public consultMilestone : Utils`MyString ==> Milestone
+	public consultMilestone : MyUtils`MyString ==> Milestone
 	consultMilestone(email) ==
 		let cli = getClientByEmail(email)
 		in 
@@ -85,11 +85,11 @@ operations
 	/*******************************************************/
 	
 	-- Returns all users
-	pure public getAllUsers : () ==> set of Utils`MyString
+	pure public getAllUsers : () ==> set of MyUtils`MyString
 	getAllUsers() == return allUsers;
 	
 	-- Returns user
-	public getUser : () ==> Utils`MyString
+	public getUser : () ==> MyUtils`MyString
 	getUser() == return user;
 	
 
@@ -98,7 +98,7 @@ operations
 	/*******************************************************/
 	
 	-- Checks if user is a client
-	public pure userIsClient : Utils`MyString ==> bool
+	public pure userIsClient : MyUtils`MyString ==> bool
 	userIsClient(cli) == (
 		if cli = "undefined"
 		then return false
@@ -112,7 +112,7 @@ operations
 	);
 	
 	-- Gets client by email
-	public getClientByEmail : Utils`MyString ==> Client
+	public getClientByEmail : MyUtils`MyString ==> Client
 	getClientByEmail(cli) == (
 		for all c in set clients do (
 			if cli = c.getEmail()
@@ -165,7 +165,7 @@ operations
 	getTrainers() == return trainers;
 	
 	-- Checks if current user if a trainer
-	public pure userIsTrainer : Utils`MyString ==> bool
+	public pure userIsTrainer : MyUtils`MyString ==> bool
 	userIsTrainer(email) == (
 		if user = "undefined"
 		then return false
@@ -213,7 +213,7 @@ operations
 	);
 	
 	-- Checks if exercise exists
-	public pure exerciseExists : Utils`MyString ==> bool
+	public pure exerciseExists : MyUtils`MyString ==> bool
 	exerciseExists(name) == (
 		for all ex in set exercises do (
 			if (name = ex.getName())
@@ -223,7 +223,7 @@ operations
 	);
 	
 	-- Gets exercise in exercises set by name
-	public getExercise : Utils`MyString ==> Exercise
+	public getExercise : MyUtils`MyString ==> Exercise
 	getExercise(name) == (
 		for all ex in set exercises do (
 			if (name = ex.getName())
@@ -271,13 +271,13 @@ operations
 	/*******************************************************/
 	
 	-- Creates a set
-	public createSet : () ==> Set
+	public createSet : () ==> MySet
 	createSet() == (
-		return new Set();
+		return new MySet();
 	);
 	
 	-- Add series to set
-	public addSeriesToSet : Set * Series ==> ()
+	public addSeriesToSet : MySet * Series ==> ()
 	addSeriesToSet(s, srs) ==
 		s.addSeries(srs);
 	
@@ -286,7 +286,7 @@ operations
 	/*******************************************************/
 	
 	-- A trainer creates a daily plan to add to the training plan of a client
-	public setDailyPlan : Utils`MyString * nat * Set==> ()
+	public setDailyPlan : MyUtils`MyString * nat * MySet==> ()
 	setDailyPlan(email, day, s) == (
 		let cli = getClientByEmail(email)
 		in 
@@ -297,7 +297,7 @@ operations
 	pre userIsClient(email) and userIsTrainer(user);
 	
 	-- A trainer consults a daily plan of the training plan of a client
-	public getDailyPlan : Utils`MyString * nat==> Set
+	public getDailyPlan : MyUtils`MyString * nat==> MySet
 	getDailyPlan(email, day) == (
 		let cli = getClientByEmail(email)
 		in 

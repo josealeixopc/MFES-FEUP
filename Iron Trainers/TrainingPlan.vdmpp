@@ -4,7 +4,7 @@ types
 values
 -- TODO Define values here
 instance variables
-	plan : map nat1 to Set;
+	plan : map nat1 to MySet;
 		
 operations	
 
@@ -13,16 +13,16 @@ operations
 		plan := { |-> }; -- empty map
 	);
 	
-	public getPlan : () ==> map nat1 to Set
+	public getPlan : () ==> map nat1 to MySet
 	getPlan() ==
 		return plan;
 	
-	public getDailyPlan : nat ==> Set
+	public getDailyPlan : nat ==> MySet
 	getDailyPlan(day) == 
 		return plan(day)
 		pre day > 0;
 	
-	public setDailyPlan : nat * Set ==> ()
+	public setDailyPlan : nat * MySet ==> ()
 	setDailyPlan(day, p) == 
 		plan(day) := p
 		pre day > 0;

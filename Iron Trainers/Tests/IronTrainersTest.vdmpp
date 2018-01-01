@@ -26,7 +26,7 @@ operations
 		dcl testGender : Client`Sex := <F>;
 		dcl testWeight: real := 65.0;
 		dcl testHeight: int := 180;
-		dcl testBirthDate: Utils`Date := mk_Utils`Date(2, 3, 1980);
+		dcl testBirthDate: MyUtils`Date := mk_MyUtils`Date(2, 3, 1980);
 		
 		dcl c1 : Client := new Client(testEmail, testPassword, testName, testGender, testWeight, testHeight, testBirthDate);
 		
@@ -48,11 +48,11 @@ operations
 	private testAddExercises : () ==> ()
 	testAddExercises() ==
 	(
-		dcl testName: Utils`MyString := "Running";
-		dcl testName2: Utils`MyString := "Squats";
-		dcl testName3: Utils`MyString := "Jumps";
-		dcl testName4: Utils`MyString := "Cycling";
-		dcl testDescription: Utils`MyString := "Running";
+		dcl testName: MyUtils`MyString := "Running";
+		dcl testName2: MyUtils`MyString := "Squats";
+		dcl testName3: MyUtils`MyString := "Jumps";
+		dcl testName4: MyUtils`MyString := "Cycling";
+		dcl testDescription: MyUtils`MyString := "Running";
 		dcl testBodyPart1: Exercise`BodyPart := <Leg>;
 		dcl testBodyPart2: Exercise`BodyPart := <Arm>;
 		dcl testBodyPart3: Exercise`BodyPart := <Chest>;
@@ -185,7 +185,7 @@ operations
 		dcl testGender : Client`Sex := <F>;
 		dcl testWeight: real := 65.0;
 		dcl testHeight: int := 180;
-		dcl testBirthDate: Utils`Date := mk_Utils`Date(2, 3, 1980);
+		dcl testBirthDate: MyUtils`Date := mk_MyUtils`Date(2, 3, 1980);
 		
 		dcl c1 : Client := new Client(testEmail, testPassword, testName, testGender, testWeight, testHeight, testBirthDate);
 		
@@ -198,7 +198,7 @@ operations
 	private testCurrentYear: () ==> ()
 	testCurrentYear() ==
 	(
-		assertEquals(Utils`getCurrentDate(), mk_Utils`Date(3, 1, 2018));
+		assertEquals(MyUtils`getCurrentDate(), mk_MyUtils`Date(3, 1, 2018));
 	);
 	
 	private testMilestone: () ==> ()
@@ -239,8 +239,8 @@ operations
 	private testExercise: () ==> ()
 	testExercise() == 
 	(
-		dcl testName: Utils`MyString := "Running";
-		dcl testDescription: Utils`MyString := "Running";
+		dcl testName: MyUtils`MyString := "Running";
+		dcl testDescription: MyUtils`MyString := "Running";
 		dcl testBodyPart1: Exercise`BodyPart := <Leg>;
 		dcl testBodyPart2: Exercise`BodyPart := <Arm>;
 		dcl testBodyPart3: Exercise`BodyPart := <Chest>;
@@ -284,8 +284,8 @@ operations
 	testDailyPlan() == 
 	(
 	
-		dcl s1 : Set := e1.createSet();
-		dcl s2 : Set := e1.createSet();
+		dcl s1 : MySet := e1.createSet();
+		dcl s2 : MySet := e1.createSet();
 		dcl series1 : Series;
 		dcl series2 : Series;
 		dcl ex1 : Exercise;
@@ -306,7 +306,7 @@ operations
 		-- Login
 		assertEquals(e1.login(testEmailTrainer), true);
 		
-		-- Create Set Load
+		-- Create MySet Load
 		ex1 := e1.getExercise("Running");
 		series1 := e1.createSeriesTime(1, ex1, 60);
 		
@@ -315,7 +315,7 @@ operations
 		e1.setDailyPlan(testEmail, 1, s1);
 		assertEquals(e1.getDailyPlan(testEmail, 1), s1);
 		
-		-- Create Set Time
+		-- Create MySet Time
 		ex2 := e1.getExercise("Squats");
 		series2 := e1.createSeriesLoad(10.0, 10, ex2);
 		

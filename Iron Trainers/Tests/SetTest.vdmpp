@@ -22,8 +22,8 @@ instance variables
 	
 	testSeriesSequence : seq of Series := [testSeries1, testSeries2, testSeries3];
 	
-	s1 : Set := new Set(testSeriesSequence);
-	s2 : Set := new Set();
+	s1 : MySet := new MySet(testSeriesSequence);
+	s2 : MySet := new MySet();
 
 operations
 
@@ -55,7 +55,7 @@ operations
  		new SetTest().testAddSeries();
  	);
  	
- 	public getTestSet: () ==> Set
+ 	public getTestSet: () ==> MySet
 	getTestSet() ==
 	(
 		return s1;

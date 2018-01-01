@@ -118,7 +118,7 @@ public class CLI {
         fields.add(passwordField);
 
 
-        Client newClient = new Client(email, password, name, gender, weight, height, birthDate);
+        //Client newClient = new Client(email, password, name, gender, weight, height, birthDate);
     }
 
     private Field emailField = new Field(scanner, "Email") {

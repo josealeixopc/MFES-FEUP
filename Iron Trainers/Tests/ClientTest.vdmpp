@@ -15,7 +15,7 @@ instance variables
 	testGender2 : Client`Sex := <M>;
 	testWeight: real := 65.0;
 	testHeight: int := 180;
-	testBirthDate: Utils`Date := mk_Utils`Date(2, 3, 1980);
+	testBirthDate: MyUtils`Date := mk_MyUtils`Date(2, 3, 1980);
 	
 	c1 : Client := new Client(testEmail, testPassword, testName, testGender, testWeight, testHeight, testBirthDate);
 	c2 : Client := new Client(testEmail, testPassword, testName, testGender2, testWeight, testHeight, testBirthDate);
@@ -31,7 +31,7 @@ operations
 		assertEquals(c1.getGender(), testGender);
 		assertEquals(c1.getWeight(), testWeight);
 		assertEquals(c1.getHeight(), testHeight);
-		assertEquals(c1.getAge(), Utils`getCurrentDate().year - testBirthDate.year);
+		assertEquals(c1.getAge(), MyUtils`getCurrentDate().year - testBirthDate.year);
 	);
 	
 	private testSetters: () ==> ()

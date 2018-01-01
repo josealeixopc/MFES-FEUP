@@ -11,7 +11,7 @@ instance variables
 	gender : Sex;
 	weight :  real;
 	height : nat;
-	birthDate : Utils`Date;
+	birthDate : MyUtils`Date;
 	milestone : Milestone;
 	
 	-- Invariants
@@ -20,7 +20,7 @@ instance variables
 operations
 
 	-- Constructor
-	public Client : Utils`MyString * Utils`MyString * Utils`MyString * Sex * real * nat * Utils`Date ==> Client
+	public Client : MyUtils`MyString * MyUtils`MyString * MyUtils`MyString * Sex * real * nat * MyUtils`Date ==> Client
 	Client(e, p, n, s, w, h, d) == (
 		gender := s;
 		weight := w;
@@ -30,7 +30,7 @@ operations
 		User(e, p, n);
 	)
 	pre w > 0 and h > 0 
-	and d.day <= Utils`daysInMonth(d.month);
+	and d.day <= MyUtils`daysInMonth(d.month);
 	
 	-- Get gender
 	public getGender : () ==> Sex
@@ -57,7 +57,7 @@ operations
 	
 	-- Get age
 	public getAge : () ==> nat
-	getAge() == return calculateAge(birthDate, Utils`getCurrentDate());
+	getAge() == return calculateAge(birthDate, MyUtils`getCurrentDate());
 	
 	-- Get milestone
 	public getMilestone : () ==> Milestone
@@ -66,7 +66,7 @@ operations
 
 functions
 	
-	public calculateAge : Utils`Date * Utils`Date -> nat
+	public calculateAge : MyUtils`Date * MyUtils`Date -> nat
 	calculateAge(d, c) == 
 		c.year - d.year
 	pre c.year > d.year and d.year > 0 

@@ -2,14 +2,14 @@ class User
 types
 	
 instance variables
-	email : Utils`MyString;
-	password : Utils`MyString;
-	name : Utils`MyString;
+	email : MyUtils`MyString;
+	password : MyUtils`MyString;
+	name : MyUtils`MyString;
 	mobile : [int];
 	
 operations
 	-- Constructor of user without mobile phone
-	public User : Utils`MyString * Utils`MyString * Utils`MyString ==> User
+	public User : MyUtils`MyString * MyUtils`MyString * MyUtils`MyString ==> User
 	User(e, p, n) == (
 		email := e;
 		password := p;
@@ -21,7 +21,7 @@ operations
 		and len n > 0 and len n < 50;
 	
 	-- Constructor of user with mobile phone
-	public User : Utils`MyString * Utils`MyString * Utils`MyString * int ==> User
+	public User : MyUtils`MyString * MyUtils`MyString * MyUtils`MyString * int ==> User
 	User(e, p, n, m) == (
 		email := e;
 		password := p;
@@ -34,15 +34,15 @@ operations
 		and (m div 10**8) = 9;	-- begins with 9 and has 9 numbers
 	
 	-- Get email of user
-	pure public getEmail : () ==> Utils`MyString
+	pure public getEmail : () ==> MyUtils`MyString
 	getEmail() == return email;
 	
 	-- Get password of user
-	public getPassword : () ==> Utils`MyString
+	public getPassword : () ==> MyUtils`MyString
 	getPassword() == return password;
 	
 	-- Get name of user
-	public getName : () ==> Utils`MyString
+	public getName : () ==> MyUtils`MyString
 	getName() == return name;
 	
 	public getMobileNumber : () ==> int

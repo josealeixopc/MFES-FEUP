@@ -5,7 +5,7 @@ values
 -- TODO Define values here
 instance variables
 
-	exampleSet: Set := new SetTest().getTestSet();
+	exampleSet: MySet := new SetTest().getTestSet();
 	
 	tp1 : TrainingPlan := new TrainingPlan();
 	

@@ -1,4 +1,4 @@
-package com.mfes;
+package com.mfes.gui;
 
 import java.util.ArrayList;
 import java.util.Scanner;

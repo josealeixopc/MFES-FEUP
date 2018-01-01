@@ -1,4 +1,4 @@
-package com.mfes;
+package com.mfes.gui;
 
 public class Main {
 

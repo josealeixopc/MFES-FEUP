@@ -62,7 +62,7 @@ public class CLI {
         options.add("My Training Plan");
         options.add("My Milestones");
 
-        this.clientMenu = new Menu(this.scanner, "Client Menu", options) {
+        this.clientMenu = new Menu(this.scanner, "Client Menu", options, initialMenu) {
             @Override
             void selectedOptionTrigger(int selectedOption) {
                 switch (selectedOption) {
@@ -92,40 +92,24 @@ public class CLI {
             }
         };
 
-        Field weightField = new Field(this.scanner, "Weight (in kg)") {
-            @Override
-            protected boolean canInputBeParsed() {
-                try{
-                    Float.parseFloat(this.input);   // try to parse into a float. If an exception happens, return false.
-                    return true;
-                }catch (Exception e){
-                    return false;
-                }
-            }
-        };
-
         ArrayList<Field> fields = new ArrayList<>();
         fields.add(emailField);
         fields.add(passwordField);
-        fields.add(weightField);
 
         Form loginForm = new Form("Login Form", fields);
         loginForm.showForm();
         boolean submit = loginForm.submitForm(scanner);
 
         if(!submit){
-            initialMenu.show(); // go back to initial menu
+            initialMenu.show(); // go back to initial menu (parent menu)
         }
         else{
             /* After filling the form */
             email = emailField.getInput();
             password = passwordField.getInput();
-            weight = Float.parseFloat(weightField.getInput());
 
             /* Do something with input*/
-            System.out.println("MyEmail: " + email);
-            System.out.println("MyPassword: " + password);
-            System.out.println("MyWeight: " + weight);
+
 
             clientMenu.show();  // go to next menu
         }

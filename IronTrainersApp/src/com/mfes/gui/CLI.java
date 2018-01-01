@@ -6,13 +6,23 @@ import java.util.Scanner;
 public class CLI {
 
     private Scanner scanner;
+    // ADD IRON TRAINERS MEMBER
+
+    // MENUS
+    private Menu initialMenu;
+    private Menu clientMenu;
+
 
     CLI() {
         scanner = new Scanner(System.in);
+
+        createMenus();
     }
 
     public void run(){
-        showInitialMenu();
+        showAppBanner();
+
+        this.initialMenu.show();
     }
 
     private void showAppBanner(){
@@ -24,14 +34,17 @@ public class CLI {
                 "*******************************\n");
     }
 
-    private void showInitialMenu(){
-        showAppBanner();
+    private void createMenus(){
+        createInitialMenu();
+        createClientMenu();
+    }
 
+    private void createInitialMenu(){
         ArrayList<String> options = new ArrayList<>();
         options.add("Log In");
         options.add("Register");
 
-        Menu loginMenu = new Menu(this.scanner, "Login / Register", options) {
+        this.initialMenu = new Menu(this.scanner, "Login / Register", options) {
             @Override
             void selectedOptionTrigger(int selectedOption) {
                 switch (selectedOption) {
@@ -42,8 +55,21 @@ public class CLI {
                 }
             }
         };
+    }
 
-        loginMenu.show();
+    private void createClientMenu(){
+        ArrayList<String> options = new ArrayList<>();
+        options.add("My Training Plan");
+        options.add("My Milestones");
+
+        this.clientMenu = new Menu(this.scanner, "Client Menu", options) {
+            @Override
+            void selectedOptionTrigger(int selectedOption) {
+                switch (selectedOption) {
+                    default: break;
+                }
+            }
+        };
     }
 
     private void showLoginForm(){
@@ -85,14 +111,25 @@ public class CLI {
 
         Form loginForm = new Form("Login Form", fields);
         loginForm.showForm();
+        boolean submit = loginForm.submitForm(scanner);
 
-        /* After filling the form */
-        email = emailField.getInput();
-        password = passwordField.getInput();
-        weight = Float.parseFloat(weightField.getInput());
+        if(!submit){
+            initialMenu.show(); // go back to initial menu
+        }
+        else{
+            /* After filling the form */
+            email = emailField.getInput();
+            password = passwordField.getInput();
+            weight = Float.parseFloat(weightField.getInput());
 
-        System.out.println("MyEmail: " + email);
-        System.out.println("MyPassword: " + password);
-        System.out.println("MyWeight: " + weight);
+            /* Do something with input*/
+            System.out.println("MyEmail: " + email);
+            System.out.println("MyPassword: " + password);
+            System.out.println("MyWeight: " + weight);
+
+            clientMenu.show();  // go to next menu
+        }
+
+
     }
 }

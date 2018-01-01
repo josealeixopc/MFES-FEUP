@@ -1,11 +1,12 @@
 package com.mfes.gui;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Form {
 
-    String name;
-    ArrayList<Field> fields;
+    private String name;
+    private ArrayList<Field> fields;
 
     Form(String name, ArrayList<Field> fields){
         this.name = name;
@@ -33,6 +34,33 @@ public class Form {
                     this.printInvalidInputMessage();
                 }
             }
+        }
+    }
+
+    public boolean submitForm(Scanner scanner){
+
+        Field submission = new Field(scanner,
+                "Are you sure you want to submit this form?\n" +
+                "[Y]es or [N]o?") {
+            @Override
+            protected boolean canInputBeParsed() {
+                if(this.input.equalsIgnoreCase("y") || this.input.equalsIgnoreCase("n")){
+                    return true;
+                }
+                else{
+                    return false;
+                }
+            }
+        };
+
+        submission.print();
+        submission.readInput();
+
+        if(submission.getInput().equalsIgnoreCase("y")){
+            return true;
+        }
+        else{
+            return false;
         }
     }
 

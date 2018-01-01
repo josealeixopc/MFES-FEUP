@@ -5,10 +5,13 @@ import java.util.Scanner;
 
 public abstract class Menu {
 
-    Scanner scanner;
-    String menuName;
-    ArrayList<String> options;
-    Menu parent;
+    static String BACK_KEY = "b";
+    static String QUIT_KEY = "q";
+
+    private Scanner scanner;
+    private String menuName;
+    private ArrayList<String> options;
+    private Menu parent;
 
     Menu(Scanner scanner, String menuName, ArrayList<String> options){
         this(scanner, menuName, options, null);
@@ -23,11 +26,8 @@ public abstract class Menu {
 
     void show(){
         this.printMenu();
-        int selectedOption = this.getSelectedOption();
-        this.selectedOptionTrigger(selectedOption);
+        this.getAndProcessInput();
     }
-
-    abstract void selectedOptionTrigger(int selectedOption);
 
     private void printMenu(){
 
@@ -37,40 +37,65 @@ public abstract class Menu {
             System.out.println(i + " - " + this.options.get(i-1));
         }
 
-        System.out.print("\nOption to select: ");
+        System.out.println("\nChoose 'q' to quit or 'b' to go back");
+        System.out.print("Option to select: ");
     }
 
-    private int getSelectedOption(){
 
-        boolean validInput = false;
-        int selectedOption = -1;
+    private void getAndProcessInput(){
+
         String input;
+        int selectedOption;
 
-        while(!validInput){
+        while(true) {
 
             input = this.scanner.nextLine();
 
+            if (input.equalsIgnoreCase(BACK_KEY)) {
+                if(parent != null){
+                    parent.show();
+                    break;
+                }
+                else{
+                    printNoParentMessage();
+                    printInvalidInputMessage();
+                    continue;
+                }
+
+            }
+
+            if (input.equalsIgnoreCase(QUIT_KEY)) {
+                System.exit(0);
+                break;
+            }
+
             try {
                 selectedOption = Integer.parseInt(input);
+                if(selectedOption >= 1 && selectedOption <= this.options.size()) {
+                    this.selectedOptionTrigger(selectedOption);
+                    break;
+                }
             }
             catch (Exception e){
                 System.out.println(e.getMessage());
-            }
-
-            if(selectedOption >= 1 && selectedOption <= this.options.size()) {
-                validInput = true;
-            }
-            else {
                 printInvalidInputMessage();
             }
+
+
+
         }
 
-        return selectedOption;
     }
+
+    abstract void selectedOptionTrigger(int selectedOption);
 
     private void printInvalidInputMessage(){
         System.out.print( "Invalid input!!!\n" +
                 "Please selected a different option: ");
+    }
+
+    private void printNoParentMessage(){
+        System.out.println("This menu has no parent.");
     }
 
 }

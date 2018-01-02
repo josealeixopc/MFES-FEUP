@@ -28,6 +28,12 @@ public class CLI {
     private Field nameField;
     private Field genderField;
     private Field weightField;
+    private Field heightField;
+    private Field birthYearField;
+    private Field birthMonthField;
+    private Field birthDayField;
+
+
     private Field exerciseNameField;
     private Field exerciseDescriptionField;
     private Field exerciseBodyPartField;
@@ -96,7 +102,7 @@ public class CLI {
                 switch (selectedOption) {
                     case 1: showLoginFormClient(); break;
                     case 2: showLoginFormTrainer(); break;
-                    case 3: System.out.println("Register"); break;
+                    case 3: showRegisterFrom(); break;
                     default:
                         break;
                 }
@@ -304,9 +310,57 @@ public class CLI {
         ArrayList<Field> fields = new ArrayList<>();
         fields.add(emailField);
         fields.add(passwordField);
+        fields.add(nameField);
+        fields.add(genderField);
+        fields.add(weightField);
+        fields.add(heightField);
+        fields.add(birthYearField);
+        fields.add(birthMonthField);
+        fields.add(birthDayField);
+
+        Form loginForm = new Form("Login Form Trainer", fields);
+        loginForm.showForm();
+        boolean submit = loginForm.submitForm(scanner);
+
+        if(!submit){
+            initialMenu.show();
+        }
+        else{
+            /* After filling the form */
+            email = emailField.getInput();
+            password = passwordField.getInput();
+            name = nameField.getInput();
+
+            if(genderField.input.equalsIgnoreCase("f")){
+                gender = 'f';
+            }
+            else {
+                gender = 'm';
+            }
+
+            weight = Float.parseFloat(weightField.getInput());
+            height = Integer.parseInt(heightField.getInput());
+            birthDate = new MyUtils.Date(Integer.parseInt(birthYearField.getInput()),
+                                            Integer.parseInt(birthMonthField.getInput()),
+                                            Integer.parseInt(birthDayField.getInput()));
 
 
-        //Client newClient = new Client(email, password, name, gender, weight, height, birthDate);
+            Client newClient;
+
+            if(gender == 'f'){  // female
+                 newClient = new Client(email, password, name, FQuote.getInstance(), weight, height, birthDate);
+            }
+            else{
+                newClient = new Client(email, password, name, MQuote.getInstance(), weight, height, birthDate);
+            }
+
+            /* Do something with input*/
+            ironTrainers.addClient(newClient);
+
+            System.out.println("New user created.");
+
+            initialMenu.show();
+        }
     }
 
     private void showProfileInformation(){
@@ -374,6 +428,58 @@ public class CLI {
             }
         };
 
+        heightField = new Field(scanner, "Height"){
+
+            @Override
+            protected boolean canInputBeParsed() {
+                try{
+                    Integer.parseInt(this.input);
+                    return true;
+                }catch (Exception e){
+                    return false;
+                }
+            }
+        };
+
+        birthYearField = new Field(scanner, "Birth year"){
+
+            @Override
+            protected boolean canInputBeParsed() {
+                try{
+                    Integer.parseInt(this.input);
+                    return true;
+                }catch (Exception e){
+                    return false;
+                }
+            }
+        };
+
+        birthMonthField = new Field(scanner, "Birth month"){
+
+            @Override
+            protected boolean canInputBeParsed() {
+                try{
+                    Integer.parseInt(this.input);
+                    return true;
+                }catch (Exception e){
+                    return false;
+                }
+            }
+        };
+
+        birthDayField = new Field(scanner, "Birth day"){
+
+            @Override
+            protected boolean canInputBeParsed() {
+                try{
+                    Integer.parseInt(this.input);
+                    return true;
+                }catch (Exception e){
+                    return false;
+                }
+            }
+        };
+        
         exerciseNameField = new Field(scanner, "Exercise name"){
 
             @Override

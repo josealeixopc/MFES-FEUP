@@ -148,6 +148,9 @@ public class CLI {
                     case 1:
                         editWeight();
                         break;
+                    case 2:
+                        editHeight();
+                        break;
                     default: break;
                 }
             }
@@ -217,16 +220,16 @@ public class CLI {
         ArrayList<Field> fields = new ArrayList<>();
         fields.add(heightField);
 
-        Form editWeight = new Form("Edit Weight Form", fields);
-        editWeight.showForm();
-        boolean submit = editWeight.submitForm(scanner);
+        Form editHeight = new Form("Edit Height Form", fields);
+        editHeight.showForm();
+        boolean submit = editHeight.submitForm(scanner);
 
         if (!submit){
             profileMenu.show();
         }
         else{
-            weight = Float.parseFloat(weightField.getInput());
-            client.setWeight(weight);
+            height = Integer.parseInt(heightField.getInput());
+            client.setHeight(height);
             clientMenu.show();
         }
     }

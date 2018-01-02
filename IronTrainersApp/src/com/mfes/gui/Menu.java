@@ -12,6 +12,7 @@ public abstract class Menu {
     private String menuName;
     private ArrayList<String> options;
     private Menu parent;
+    private int selectedOption;
 
     Menu(Scanner scanner, String menuName, ArrayList<String> options){
         this(scanner, menuName, options, null);
@@ -72,7 +73,7 @@ public abstract class Menu {
             try {
                 selectedOption = Integer.parseInt(input);
                 if(selectedOption >= 1 && selectedOption <= this.options.size()) {
-                    this.selectedOptionTrigger(selectedOption);
+                    this.selectedOption = selectedOption;
                     break;
                 }
             }
@@ -80,17 +81,15 @@ public abstract class Menu {
                 System.out.println(e.getMessage());
                 printInvalidInputMessage();
             }
-
-
-
         }
 
+        selectedOptionTrigger(this.selectedOption);
     }
 
     abstract void selectedOptionTrigger(int selectedOption);
 
     private void printInvalidInputMessage(){
-        System.out.print( "Invalid input!!!\n" +
+        System.out.print( "Invalid input for the menu!!!\n" +
                 "Please selected a different option: ");
     }
 

@@ -16,12 +16,19 @@ public class CLI {
     private Menu initialMenu;
     private Menu clientMenu;
 
+    // FIELDS
+    private Field emailField;
+    private Field passwordField;
+    private Field nameField;
+    private Field genderField;
+    private Field weightField;
 
     CLI() {
         this.scanner = new Scanner(System.in);
         this.ironTrainers = new IronTrainers();
 
         createMenus();
+        createFields();
     }
 
     public void run(){
@@ -121,48 +128,50 @@ public class CLI {
         //Client newClient = new Client(email, password, name, gender, weight, height, birthDate);
     }
 
-    private Field emailField = new Field(scanner, "Email") {
-        @Override
-        protected boolean canInputBeParsed() {
-            return true;    // any string is a string
-        }
-    };
-
-    private Field passwordField = new Field(scanner, "Password") {
-        @Override
-        protected boolean canInputBeParsed() {
-            return true;    // any string is a string
-        }
-    };
-
-    private Field nameField = new Field(scanner, "Name") {
-        @Override
-        protected boolean canInputBeParsed() {
-            return true;    // any string is a string
-        }
-    };
-
-    private Field genderField = new Field(scanner, "Gender (M or F)") {
-        @Override
-        protected boolean canInputBeParsed() {
-            if(this.input.equalsIgnoreCase("M") || this.input.equalsIgnoreCase("F")){
-                return true;
+    private void createFields(){
+        emailField = new Field(scanner, "Email") {
+            @Override
+            protected boolean canInputBeParsed() {
+                return true;    // any string is a string
             }
+        };
 
-            return false;
-        }
-    };
+        passwordField = new Field(scanner, "Password") {
+            @Override
+            protected boolean canInputBeParsed() {
+                return true;    // any string is a string
+            }
+        };
 
-    private Field weightField = new Field(scanner, "Weight"){
+        nameField = new Field(scanner, "Name") {
+            @Override
+            protected boolean canInputBeParsed() {
+                return true;    // any string is a string
+            }
+        };
 
-        @Override
-        protected boolean canInputBeParsed() {
-            try{
-                Float.parseFloat(this.input);
-                return true;
-            }catch (Exception e){
+        genderField = new Field(scanner, "Gender (M or F)") {
+            @Override
+            protected boolean canInputBeParsed() {
+                if(this.input.equalsIgnoreCase("M") || this.input.equalsIgnoreCase("F")){
+                    return true;
+                }
+
                 return false;
             }
-        }
-    };
+        };
+
+        weightField = new Field(scanner, "Weight"){
+
+            @Override
+            protected boolean canInputBeParsed() {
+                try{
+                    Float.parseFloat(this.input);
+                    return true;
+                }catch (Exception e){
+                    return false;
+                }
+            }
+        };
+    }
 }

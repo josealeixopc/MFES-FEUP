@@ -65,7 +65,7 @@ public class Form {
     }
 
     private void printInvalidInputMessage(){
-        System.out.print( "Invalid input!!!\n" +
+        System.out.print( "Invalid input for the field!!!\n" +
                 "Please try a different input.\n");
     }
 }

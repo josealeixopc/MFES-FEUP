@@ -34,7 +34,10 @@ public class CLI {
     public void run(){
         showAppBanner();
 
-        this.initialMenu.show();
+        //this.initialMenu.show();
+
+        //teste
+        this.clientMenu.show();
     }
 
     private void showAppBanner(){
@@ -71,13 +74,23 @@ public class CLI {
 
     private void createClientMenu(){
         ArrayList<String> options = new ArrayList<>();
+        options.add("My Profile");
         options.add("My Training Plan");
         options.add("My Milestones");
 
-        this.clientMenu = new Menu(this.scanner, "Client Menu", options, initialMenu) {
+        this.clientMenu = new Menu(this.scanner, "Client Menu", options) {
             @Override
             void selectedOptionTrigger(int selectedOption) {
                 switch (selectedOption) {
+                    case 1:
+                        showProfileInformation();
+                        break;
+                    case 2:
+
+                        break;
+                    case 3:
+
+                        break;
                     default: break;
                 }
             }
@@ -126,6 +139,10 @@ public class CLI {
 
 
         //Client newClient = new Client(email, password, name, gender, weight, height, birthDate);
+    }
+
+    private void showProfileInformation(){
+        Client client =
     }
 
     private void createFields(){

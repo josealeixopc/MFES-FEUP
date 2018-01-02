@@ -32,7 +32,7 @@ public abstract class Menu {
 
     private void printMenu(){
 
-        System.out.println("** " + this.menuName + " **\n");
+        System.out.println("\n** " + this.menuName + " **\n");
 
         for(int i = 1; i <= this.options.size(); i++){
             System.out.println(i + " - " + this.options.get(i-1));

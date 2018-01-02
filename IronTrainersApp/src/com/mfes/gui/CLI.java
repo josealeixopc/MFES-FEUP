@@ -86,14 +86,15 @@ public class CLI {
         ArrayList<String> options = new ArrayList<>();
         options.add("Log In as a Client");
         options.add("Log In as a Trainer");
-        options.add("Register");
+        options.add("Register as a Client");
 
         this.initialMenu = new Menu(this.scanner, "Login / Register", options) {
             @Override
             void selectedOptionTrigger(int selectedOption) {
                 switch (selectedOption) {
-                    case 1: showLoginForm(); break;
-                    case 2: System.out.println("You don't have an account"); break;
+                    case 1: showLoginFormClient(); break;
+                    case 2: showLoginFormTrainer(); break;
+                    case 3: System.out.println("Register"); break;
                     default:
                         break;
                 }
@@ -149,16 +150,16 @@ public class CLI {
         };
     }
 
-    private void showLoginForm(){
+    private void showLoginFormClient(){
 
-        String email;
-        String password;
+        String clientEmail;
+        String clientPassword;
 
         ArrayList<Field> fields = new ArrayList<>();
         fields.add(emailField);
         fields.add(passwordField);
 
-        Form loginForm = new Form("Login Form", fields);
+        Form loginForm = new Form("Login Form Client", fields);
         loginForm.showForm();
         boolean submit = loginForm.submitForm(scanner);
 
@@ -167,12 +168,52 @@ public class CLI {
         }
         else{
             /* After filling the form */
-            email = emailField.getInput();
-            password = passwordField.getInput();
+            clientEmail = emailField.getInput();
+            clientPassword = passwordField.getInput();
 
             /* Do something with input*/
+            boolean loginSuccessful = ironTrainers.loginClient(clientEmail, clientPassword);
 
-            clientMenu.show();  // go to next menu
+            if(loginSuccessful)
+                clientMenu.show();  // go to next menu
+            else{
+                System.out.println("Wrong username or password.");
+                initialMenu.show();
+            }
+
+        }
+    }
+
+    private void showLoginFormTrainer(){
+
+        String trainerEmail;
+        String trainerPassword;
+
+        ArrayList<Field> fields = new ArrayList<>();
+        fields.add(emailField);
+        fields.add(passwordField);
+
+        Form loginForm = new Form("Login Form Trainer", fields);
+        loginForm.showForm();
+        boolean submit = loginForm.submitForm(scanner);
+
+        if(!submit){
+            initialMenu.show();
+        }
+        else{
+            /* After filling the form */
+            trainerEmail = emailField.getInput();
+            trainerPassword = passwordField.getInput();
+
+            /* Do something with input*/
+            boolean loginSuccessful = ironTrainers.loginTrainer(trainerEmail, trainerPassword);
+
+            if(loginSuccessful)
+                trainerMenu.show();  // go to next menu
+            else{
+                System.out.println("Wrong username or password.");
+                initialMenu.show();
+            }
         }
     }
 

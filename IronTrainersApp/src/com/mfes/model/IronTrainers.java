@@ -1,6 +1,7 @@
 package com.mfes.model;
 
 import java.util.*;
+
 import org.overture.codegen.runtime.*;
 
 @SuppressWarnings("all")
@@ -25,9 +26,20 @@ public class IronTrainers {
     cg_init_IronTrainers_1();
   }
 
-  public Boolean login(final String email) {
+  public Boolean loginClient(final String email, final String password) {
 
-    if (Utils.equals(user, "undefined")) {
+    if (Utils.equals(getClientByEmail(email).getPassword(), password)) {
+      user = email;
+      return true;
+
+    } else {
+      return false;
+    }
+  }
+
+  public Boolean loginTrainer(final String email, final String password) {
+
+    if (Utils.equals(getTrainerByEmail(email).getPassword(), password)) {
       user = email;
       return true;
 
@@ -72,18 +84,13 @@ public class IronTrainers {
 
   public Boolean userIsClient(final String cli) {
 
-    if (Utils.equals(cli, "undefined")) {
-      return false;
-
-    } else {
-      for (Iterator iterator_1 = clients.iterator(); iterator_1.hasNext(); ) {
-        Client c = (Client) iterator_1.next();
-        if (Utils.equals(cli, c.getEmail())) {
-          return true;
-        }
+    for (Iterator iterator_1 = clients.iterator(); iterator_1.hasNext(); ) {
+      Client c = (Client) iterator_1.next();
+      if (Utils.equals(cli, c.getEmail())) {
+        return true;
       }
-      return false;
     }
+    return false;
   }
 
   public Client getClientByEmail(final String cli) {
@@ -112,7 +119,7 @@ public class IronTrainers {
     VDMSet atomicTmp_1 = SetUtil.union(Utils.copy(clients), SetUtil.set(client));
     VDMSet atomicTmp_2 = SetUtil.union(Utils.copy(allUsers), SetUtil.set(client.getEmail()));
     {
-        /* Start of atomic statement */
+      /* Start of atomic statement */
       clients = Utils.copy(atomicTmp_1);
       allUsers = Utils.copy(atomicTmp_2);
     } /* End of atomic statement */
@@ -123,7 +130,7 @@ public class IronTrainers {
     VDMSet atomicTmp_3 = SetUtil.diff(Utils.copy(clients), SetUtil.set(client));
     VDMSet atomicTmp_4 = SetUtil.diff(Utils.copy(allUsers), SetUtil.set(client.getEmail()));
     {
-        /* Start of atomic statement */
+      /* Start of atomic statement */
       clients = Utils.copy(atomicTmp_3);
       allUsers = Utils.copy(atomicTmp_4);
     } /* End of atomic statement */
@@ -136,18 +143,13 @@ public class IronTrainers {
 
   public Boolean userIsTrainer(final String email) {
 
-    if (Utils.equals(user, "undefined")) {
-      return false;
-
-    } else {
-      for (Iterator iterator_3 = trainers.iterator(); iterator_3.hasNext(); ) {
-        Trainer t = (Trainer) iterator_3.next();
-        if (Utils.equals(email, t.getEmail())) {
-          return true;
-        }
+    for (Iterator iterator_3 = trainers.iterator(); iterator_3.hasNext(); ) {
+      Trainer t = (Trainer) iterator_3.next();
+      if (Utils.equals(email, t.getEmail())) {
+        return true;
       }
-      return false;
     }
+    return false;
   }
 
   public void addTrainer(final Trainer trainer) {
@@ -155,7 +157,7 @@ public class IronTrainers {
     VDMSet atomicTmp_5 = SetUtil.union(Utils.copy(trainers), SetUtil.set(trainer));
     VDMSet atomicTmp_6 = SetUtil.union(Utils.copy(allUsers), SetUtil.set(trainer.getEmail()));
     {
-        /* Start of atomic statement */
+      /* Start of atomic statement */
       trainers = Utils.copy(atomicTmp_5);
       allUsers = Utils.copy(atomicTmp_6);
     } /* End of atomic statement */
@@ -166,10 +168,21 @@ public class IronTrainers {
     VDMSet atomicTmp_7 = SetUtil.diff(Utils.copy(trainers), SetUtil.set(trainer));
     VDMSet atomicTmp_8 = SetUtil.diff(Utils.copy(allUsers), SetUtil.set(trainer.getEmail()));
     {
-        /* Start of atomic statement */
+      /* Start of atomic statement */
       trainers = Utils.copy(atomicTmp_7);
       allUsers = Utils.copy(atomicTmp_8);
     } /* End of atomic statement */
+  }
+
+  public Trainer getTrainerByEmail(final String email) {
+
+    for (Iterator iterator_4 = trainers.iterator(); iterator_4.hasNext(); ) {
+      Trainer t = (Trainer) iterator_4.next();
+      if (Utils.equals(email, t.getEmail())) {
+        return t;
+      }
+    }
+    return new Trainer();
   }
 
   public VDMSet getExercises() {
@@ -179,8 +192,8 @@ public class IronTrainers {
 
   public Boolean exerciseExists(final String name) {
 
-    for (Iterator iterator_4 = exercises.iterator(); iterator_4.hasNext(); ) {
-      Exercise ex = (Exercise) iterator_4.next();
+    for (Iterator iterator_5 = exercises.iterator(); iterator_5.hasNext(); ) {
+      Exercise ex = (Exercise) iterator_5.next();
       if (Utils.equals(name, ex.getName())) {
         return true;
       }
@@ -190,8 +203,8 @@ public class IronTrainers {
 
   public Exercise getExercise(final String name) {
 
-    for (Iterator iterator_5 = exercises.iterator(); iterator_5.hasNext(); ) {
-      Exercise ex = (Exercise) iterator_5.next();
+    for (Iterator iterator_6 = exercises.iterator(); iterator_6.hasNext(); ) {
+      Exercise ex = (Exercise) iterator_6.next();
       if (Utils.equals(name, ex.getName())) {
         return ex;
       }
@@ -252,16 +265,16 @@ public class IronTrainers {
   public String toString() {
 
     return "IronTrainers{"
-        + "clients := "
-        + Utils.toString(clients)
-        + ", trainers := "
-        + Utils.toString(trainers)
-        + ", allUsers := "
-        + Utils.toString(allUsers)
-        + ", exercises := "
-        + Utils.toString(exercises)
-        + ", user := "
-        + Utils.toString(user)
-        + "}";
+            + "clients := "
+            + Utils.toString(clients)
+            + ", trainers := "
+            + Utils.toString(trainers)
+            + ", allUsers := "
+            + Utils.toString(allUsers)
+            + ", exercises := "
+            + Utils.toString(exercises)
+            + ", user := "
+            + Utils.toString(user)
+            + "}";
   }
 }

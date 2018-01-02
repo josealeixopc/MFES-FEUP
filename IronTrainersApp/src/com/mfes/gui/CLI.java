@@ -20,6 +20,7 @@ public class CLI {
     private Menu clientMenu;
     private Menu trainerMenu;
     private Menu exerciseMenu;
+    private Menu profileMenu;
 
     // FIELDS
     private Field emailField;
@@ -44,10 +45,7 @@ public class CLI {
     public void run(){
         showAppBanner();
 
-        //this.initialMenu.show();
-
-        //teste
-        this.clientMenu.show();
+        this.initialMenu.show();
     }
 
     private void createDummyUsers(){
@@ -83,6 +81,7 @@ public class CLI {
         createClientMenu();
         createTrainerMenu();
         createExerciseMenu();
+        createProfileMenu();
     }
 
     private void createInitialMenu(){
@@ -117,12 +116,31 @@ public class CLI {
                 switch (selectedOption) {
                     case 1:
                         showProfileInformation();
+                        profileMenu.show();
                         break;
                     case 2:
 
                         break;
                     case 3:
 
+                        break;
+                    default: break;
+                }
+            }
+        };
+    }
+
+    private void createProfileMenu(){
+        ArrayList<String> options = new ArrayList<>();
+        options.add("Edit Weight");
+        options.add("Edit Height");
+
+        this.profileMenu = new Menu(this.scanner, "Profile Menu", options, clientMenu) {
+            @Override
+            void selectedOptionTrigger(int selectedOption) {
+                switch (selectedOption) {
+                    case 1:
+                        editWeight();
                         break;
                     default: break;
                 }
@@ -161,6 +179,50 @@ public class CLI {
                 }
             }
         };
+    }
+
+    private void editWeight(){
+
+        Number weight;
+        Client client = ironTrainers.getClientByEmail(ironTrainers.getUser());
+
+        ArrayList<Field> fields = new ArrayList<>();
+        fields.add(weightField);
+
+        Form editWeight = new Form("Edit Weight Form", fields);
+        editWeight.showForm();
+        boolean submit = editWeight.submitForm(scanner);
+        
+        if (!submit){
+            profileMenu.show();
+        }
+        else{
+            weight = Float.parseFloat(weightField.getInput());
+            client.setWeight(weight);
+            clientMenu.show();
+        }
+    }
+
+    private void editHeight(){
+
+        Number height;
+        Client client = ironTrainers.getClientByEmail(ironTrainers.getUser());
+
+        ArrayList<Field> fields = new ArrayList<>();
+        fields.add(heightField);
+
+        Form editWeight = new Form("Edit Weight Form", fields);
+        editWeight.showForm();
+        boolean submit = editWeight.submitForm(scanner);
+
+        if (!submit){
+            profileMenu.show();
+        }
+        else{
+            weight = Float.parseFloat(weightField.getInput());
+            client.setWeight(weight);
+            clientMenu.show();
+        }
     }
 
     private void showLoginFormClient(){
@@ -248,9 +310,20 @@ public class CLI {
     }
 
     private void showProfileInformation(){
-        Client client =
+        Client client = ironTrainers.getClientByEmail(ironTrainers.getUser());
+
+        System.out.println("\nMy Profile Information\n");
+
+        if (client.getGender().toString() == "<F>")
+            System.out.println("Gender: Female");
+        else
+            System.out.println("Gender: Male");
+
+        System.out.println("Height: " + client.getHeight());
+        System.out.println("Weight: " + client.getWeight());
+        System.out.println("Age: " + client.getAge());
     }
-    
+
     private void showCreateExerciseForm(){
         /**/
     }

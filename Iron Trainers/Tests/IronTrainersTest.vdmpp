@@ -115,13 +115,14 @@ operations
 	testClientLoginLogout() == 
 	(
 		dcl testEmail: seq of char := "testEmail";
+		dcl testPassword: seq of char := "testPassword";
 		
 		dcl c1 : Client := testCreateClient();
 		
 		e1.addClient(c1);
 		
 		-- Login
-		assertEquals(e1.login(testEmail), true);
+		assertEquals(e1.loginClient(testEmail, testPassword), true);
 		assertEquals(e1.getUser(), testEmail);
 		assertEquals(e1.getCurrentClient(), c1);
 		
@@ -134,13 +135,14 @@ operations
 	testTrainerLoginLogout() == 
 	(
 		dcl testEmail: seq of char := "testEmailTrainer";
+		dcl testPassword: seq of char := "testPassword";
 		
 		dcl t1 : Trainer := testCreateTrainer();
 		
 		e1.addTrainer(t1);
 		
 		-- Login
-		assertEquals(e1.login(testEmail), true);
+		assertEquals(e1.loginTrainer(testEmail, testPassword), true);
 		assertEquals(e1.getUser(), testEmail);
 		
 		-- Logout
@@ -152,9 +154,10 @@ operations
 	testNotRegisterLoginLogout() == 
 	(
 		dcl testEmail: seq of char := "testEmail";
+		dcl testPassword: seq of char := "testPassword";
 		
 		-- Login
-		assertEquals(e1.login(testEmail), false);
+		assertEquals(e1.loginClient(testEmail, testPassword), false);
 		assertEquals(e1.getUser(), "undefined");
 		
 		-- Logout
@@ -206,6 +209,7 @@ operations
 	(
 		dcl testEmail: seq of char := "testEmail";
 		dcl testEmail2: seq of char := "testEmailTrainer";
+		dcl testPassword: seq of char := "testPassword";
 		
 		dcl testDesiredWeight: real := 60.0;
 		
@@ -216,7 +220,7 @@ operations
 		e1.addTrainer(t1);
 		
 		-- Login with client account
-		assertEquals(e1.login(testEmail), true);
+		assertEquals(e1.loginClient(testEmail, testPassword), true);
 		
 		-- Update Milestone
 		e1.updateDesiredWeight(testDesiredWeight);
@@ -226,7 +230,7 @@ operations
 		e1.logout();
 		
 		-- Login with trainer account
-		assertEquals(e1.login(testEmail2), true);
+		assertEquals(e1.loginTrainer(testEmail2, testPassword), true);
 		
 		-- Consult Training plan
 		assertEquals(e1.consultMilestone(testEmail).getTrainingPlan().getPlan(), { |-> });
@@ -293,6 +297,7 @@ operations
 		
 		dcl testEmail: seq of char := "testEmail";
 		dcl testEmailTrainer: seq of char := "testEmailTrainer";
+		dcl testPassword: seq of char := "testPassword";
 		
 		
 		dcl c1 : Client := testCreateClient();
@@ -304,7 +309,7 @@ operations
 		testAddExercises();
 		
 		-- Login
-		assertEquals(e1.login(testEmailTrainer), true);
+		assertEquals(e1.loginTrainer(testEmailTrainer, testPassword), true);
 		
 		-- Create MySet Load
 		ex1 := e1.getExercise("Running");
@@ -327,7 +332,7 @@ operations
 		e1.logout();
 		
 		-- Login with client account
-		assertEquals(e1.login(testEmail), true);
+		assertEquals(e1.loginClient(testEmail, testPassword), true);
 		assertEquals(e1.getDailyPlan(testEmail, 2), s2);
 		
 		-- TODO Add failures?

@@ -176,6 +176,7 @@ public class CLI {
         options.add("My Profile");
         options.add("My Training Plan");
         options.add("My Milestones");
+        options.add("Logout");
 
         this.clientMenu = new Menu(this.scanner, "Client Menu", options) {
             @Override
@@ -192,6 +193,10 @@ public class CLI {
                     case 3:
                         showClientMilestone();
                         clientMilestone.show();
+                        break;
+                    case 4:
+                        ironTrainers.logout();
+                        initialMenu.show();
                         break;
                     default: break;
                 }
@@ -241,13 +246,18 @@ public class CLI {
         ArrayList<String> options = new ArrayList<>();
         options.add("Exercises");
         options.add("Clients' Milestones");
+        options.add("Logout");
 
         this.trainerMenu = new Menu(this.scanner, "Trainer Menu", options, initialMenu) {
             @Override
             void selectedOptionTrigger(int selectedOption) {
                 switch (selectedOption) {
                     case 1: exerciseMenu.show(); break;
-                    case 2: showSearchClientForm();
+                    case 2: showSearchClientForm(); break;
+                    case 3:
+                        ironTrainers.logout();
+                        initialMenu.show();
+                        break;
                     default: break;
                 }
             }

@@ -543,7 +543,7 @@ public class CLI {
 
         System.out.println("\nMy Profile Information\n");
 
-        if (client.getGender().toString() == "<F>")
+        if (client.getGender().toString().equalsIgnoreCase( "<F>"))
             System.out.println("Gender: Female");
         else
             System.out.println("Gender: Male");

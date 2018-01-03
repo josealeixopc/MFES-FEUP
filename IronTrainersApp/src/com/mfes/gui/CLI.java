@@ -34,6 +34,9 @@ public class CLI {
     private Field exerciseNameField;
     private Field exerciseDescriptionField;
     private Field exerciseBodyPartField;
+    private Field exerciseNumRepsField;
+    private Field exerciseTimeField;
+    private Field exerciseLoadField;
 
 
     CLI() {
@@ -430,6 +433,54 @@ public class CLI {
         }
     }
 
+    private void changeTrainingPlanForm(Client c){
+
+        int dayToChange;
+        MySet exerciseSet = new MySet();
+
+        while(true){
+
+            System.out.println("Add new series.");
+
+            String exerciseName;
+            int numReps;
+            int timeSeconds;
+
+            ArrayList<Field> fields = new ArrayList<>();
+            fields.add(exerciseNameField);
+            fields.add(exerciseNumRepsField);
+            fields.add(exerciseTimeField);
+
+            Form createExercise = new Form("Add exercise to series", fields);
+            createExercise.showForm();
+            boolean submit = createExercise.submitForm(scanner);
+
+            if(!submit){
+                trainerMenu.show();
+            }
+            else {
+                exerciseName = exerciseNameField.getInput();
+                numReps = Integer.parseInt(exerciseNumRepsField.getInput());
+                timeSeconds = Integer.parseInt(exerciseTimeField.getInput());
+
+                Series s = new Series(numReps, this.ironTrainers.getExercise(exerciseName), timeSeconds);
+                exerciseSet.addSeries(s);
+            }
+
+            System.out.println("Do you want to add another series? Yes or no: ");
+
+            String input;
+            input = this.scanner.nextLine();
+
+            if(input.equalsIgnoreCase("n")){
+                break;
+            }
+        }
+
+
+        // TODO: ADD 'exerciseSet' to the day given
+    }
+
     private void createFields(){
         emailField = new Field(scanner, "Email") {
             @Override
@@ -556,6 +607,43 @@ public class CLI {
                 }
 
                 return false;
+            }
+        };
+
+        exerciseNumRepsField = new Field(scanner, "Number of repetitions"){
+
+            @Override
+            protected boolean canInputBeParsed() {
+                try{
+                    Integer.parseInt(this.input);
+                    return true;
+                }catch (Exception e){
+                    return false;
+                }
+            }
+        };
+
+        exerciseTimeField = new Field(scanner, "Time in seconds"){
+            @Override
+            protected boolean canInputBeParsed() {
+                try{
+                    Integer.parseInt(this.input);
+                    return true;
+                }catch (Exception e){
+                    return false;
+                }
+            }
+        };
+
+        exerciseLoadField = new Field(scanner, "Load in kg"){
+            @Override
+            protected boolean canInputBeParsed() {
+                try{
+                    Integer.parseInt(this.input);
+                    return true;
+                }catch (Exception e){
+                    return false;
+                }
             }
         };
     }

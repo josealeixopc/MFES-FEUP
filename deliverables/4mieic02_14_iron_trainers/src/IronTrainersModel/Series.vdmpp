@@ -1,0 +1,60 @@
+class Series
+types
+-- TODO Define types here
+values
+
+	public oneKgToLbs = 2.20462262;
+
+instance variables
+	load : [rat];
+	time : [nat];
+	repetitions: nat1;
+	exercise : Exercise;
+	
+	inv repetitions > 0;
+	
+operations
+	
+	public Series : rat * nat1 * Exercise ==> Series
+	Series(l, r, e) == (
+		load := l;
+		repetitions:= r;
+		exercise := e;
+		time := nil;
+	)
+	pre l > 0 and r > 0
+	post load > 0;
+	
+	public Series : nat1 * Exercise * nat ==> Series
+	Series(r, e, t) == (
+		repetitions:= r;
+		exercise := e;
+		time := t;
+		load := nil;
+	)
+	pre t > 0 and r > 0
+	post time > 0;
+	
+	public getLoad : () ==> real
+	getLoad() == return load
+	pre load <> nil;
+	
+	public getTime : () ==> nat
+	getTime() == return time
+	pre time <> nil;
+	
+	public getNumberOfRepetitions : () ==> nat
+	getNumberOfRepetitions() == return repetitions;
+	
+	public getExercise : () ==> Exercise
+	getExercise() == return exercise;
+	
+functions
+
+	public convertFromKgToLbs: rat -> rat
+	convertFromKgToLbs(kgWeight) == kgWeight * oneKgToLbs
+	pre kgWeight > 0;
+
+traces
+-- TODO Define Combinatorial Test Traces here
+end Series

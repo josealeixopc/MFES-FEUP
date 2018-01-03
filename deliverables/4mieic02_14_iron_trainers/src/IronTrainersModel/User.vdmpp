@@ -1,0 +1,56 @@
+class User
+types
+	
+instance variables
+	email : MyUtils`MyString;
+	password : MyUtils`MyString;
+	name : MyUtils`MyString;
+	mobile : [int];
+	
+operations
+	-- Constructor of user without mobile phone
+	public User : MyUtils`MyString * MyUtils`MyString * MyUtils`MyString ==> User
+	User(e, p, n) == (
+		email := e;
+		password := p;
+		name := n;
+		mobile := nil;
+	)
+	pre len e > 0 and len e < 256
+		and len p > 0 and len p < 30
+		and len n > 0 and len n < 50;
+	
+	-- Constructor of user with mobile phone
+	public User : MyUtils`MyString * MyUtils`MyString * MyUtils`MyString * int ==> User
+	User(e, p, n, m) == (
+		email := e;
+		password := p;
+		name := n;
+		mobile := m;
+	)
+	pre len e > 0 and len e < 256
+		and len p > 0 and len p < 30
+		and len n > 0 and len n < 50
+		and (m div 10**8) = 9;	-- begins with 9 and has 9 numbers
+	
+	-- Get email of user
+	pure public getEmail : () ==> MyUtils`MyString
+	getEmail() == return email;
+	
+	-- Get password of user
+	public getPassword : () ==> MyUtils`MyString
+	getPassword() == return password;
+	
+	-- Get name of user
+	public getName : () ==> MyUtils`MyString
+	getName() == return name;
+	
+	public getMobileNumber : () ==> int
+	getMobileNumber() == return mobile;
+
+functions
+
+traces
+-- TODO Define Combinatorial Test Traces here
+
+end User

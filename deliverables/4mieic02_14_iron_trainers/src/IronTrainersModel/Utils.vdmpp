@@ -1,0 +1,44 @@
+class MyUtils
+types
+	public MyString = seq1 of char;
+	
+	public Date:: 
+		day : nat1
+		month: nat1
+		year : nat
+		inv d == d.month > 0 and d.month <= 12 
+			and d.day > 0 and d.day <= 31
+			and d.year > 1900;
+
+values
+	private currentDate = mk_Date(3, 1, 2018);
+	
+instance variables
+	public static daysInMonth : map nat1 to nat1 := {
+		1 |-> 31,
+		2 |-> 29,
+		3 |-> 31,
+		4 |-> 30,
+		5 |-> 31,
+		6 |-> 30,
+		7 |-> 31,
+		8 |-> 31,
+		9 |-> 30,
+		10 |-> 31,
+		11 |-> 30,
+		12 |-> 31
+	};
+	
+operations
+	
+	public static getCurrentDate: () ==> Date
+	getCurrentDate() ==
+	(
+		return currentDate;
+	);
+	
+functions
+-- TODO Define functiones here
+traces
+-- TODO Define Combinatorial Test Traces here
+end MyUtils

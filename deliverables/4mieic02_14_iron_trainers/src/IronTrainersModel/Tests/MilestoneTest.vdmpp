@@ -1,0 +1,40 @@
+class MilestoneTest is subclass of Test
+types
+-- TODO Define types here
+values
+-- TODO Define values here
+instance variables
+
+	testDesiredWeight : rat := 60.0;
+	
+	m1 : Milestone := new Milestone(testDesiredWeight);
+
+operations
+
+	private testConstructor: () ==> ()
+	testConstructor() == 
+	(
+		assertEquals(m1.getDesiredWeight(), testDesiredWeight);
+	);
+	
+	private testSetters: () ==> () 
+	testSetters() ==
+	(
+		dcl testNewDesiredWeight : rat := 65.0;
+		
+		m1.setDesiredWeight(testNewDesiredWeight);
+		assertEquals(m1.getDesiredWeight(), testNewDesiredWeight);
+	);
+	
+	public static run: () ==> ()
+ 	run() ==
+ 	(
+ 		new MilestoneTest().testConstructor();
+ 		new MilestoneTest().testSetters();
+ 	);
+
+functions
+-- TODO Define functiones here
+traces
+-- TODO Define Combinatorial Test Traces here
+end MilestoneTest

@@ -1,0 +1,47 @@
+class ExerciseTest is subclass of Test
+types
+-- TODO Define types here
+values
+-- TODO Define values here
+instance variables
+	
+	testName : seq of char := "testName";
+	testDescription: seq of char := "testDescription";
+	testBodyPart1: Exercise`BodyPart := <Arm>;
+	testBodyPart2: Exercise`BodyPart := <Leg>;
+	testBodyPart3: Exercise`BodyPart := <Chest>;
+	testBodyPart4: Exercise`BodyPart := <Back>;
+	
+	e1 : Exercise := new Exercise(testName, testDescription, testBodyPart1);
+	e2 : Exercise := new Exercise(testName, testDescription, testBodyPart2);
+	e3 : Exercise := new Exercise(testName, testDescription, testBodyPart3);
+	e4 : Exercise := new Exercise(testName, testDescription, testBodyPart4);
+
+
+operations
+
+	private testConstructor: () ==> ()
+	testConstructor() == 
+	(
+		assertEquals(e1.getName(), testName);
+		assertEquals(e1.getDescription(), testDescription);
+		assertEquals(e1.getBodyPart(), testBodyPart1);
+		
+		assertEquals(e2.getBodyPart(), testBodyPart2);
+		
+		assertEquals(e3.getBodyPart(), testBodyPart3);
+		
+		assertEquals(e4.getBodyPart(), testBodyPart4);
+	);
+	
+	public static run: () ==> ()
+ 	run() ==
+ 	(
+ 		new ExerciseTest().testConstructor();
+ 	);
+
+functions
+-- TODO Define functiones here
+traces
+-- TODO Define Combinatorial Test Traces here
+end ExerciseTest

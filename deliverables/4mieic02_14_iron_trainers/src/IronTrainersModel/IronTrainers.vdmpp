@@ -1,0 +1,330 @@
+class IronTrainers
+types
+	
+values
+
+instance variables
+	clients : set of Client;
+	trainers : set of Trainer;
+	allUsers : set of MyUtils`MyString;
+	exercises : set of Exercise;
+	user : MyUtils`MyString;
+	
+operations
+
+	public IronTrainers : () ==> IronTrainers
+	IronTrainers() == (
+		clients := {};
+		trainers := {};
+		allUsers := {};
+		exercises := {};
+		user := "undefined";
+	);
+	
+	/*
+	*	A 'pure' operation is an operation which does no affect the state of its object nor of any other. It is referentially transparent.
+	* A 'read-only' operation, such as a getter, can be considered pure.
+	* Making a getter 'pure' is the only way to keep instance variables private and also use their value on pre/post-conditions.
+	*/
+
+	
+	/*******************************************************/
+	/***************** 	 LOGIN & LOGOUT   ******************/
+	/*******************************************************/
+	
+	-- Login in the application
+	public loginClient : MyUtils`MyString * MyUtils`MyString ==> bool
+	loginClient(email, password) == 
+		if getClientByEmail(email).getPassword() = password
+		then (
+			user := email;
+			return true;
+		)
+		else return false		
+	pre len email > 0 and len email < 50 
+		and {email} inter allUsers <> {}
+		and userIsClient(email) and user = "undefined";
+		
+	-- Login in the application
+	public loginTrainer : MyUtils`MyString * MyUtils`MyString ==> bool
+	loginTrainer(email, password) == 
+		
+		if getTrainerByEmail(email).getPassword() = password
+		then (
+			user := email;
+			return true;
+		)
+		else return false
+	pre len email > 0 and len email < 50 
+		and {email} inter allUsers <> {}
+		and userIsTrainer(email) and user = "undefined";
+	
+	-- Logout from the application
+	public logout : () ==> ()
+	logout() ==
+		user := "undefined"
+	pre not user = "undefined"
+		and {user} inter allUsers <> {};
+	
+	
+	/*******************************************************/
+	/********************	 MILESTONE  ********************/
+	/*******************************************************/
+	
+	-- A client updates its own desired weight
+	public updateDesiredWeight : rat ==> ()
+	updateDesiredWeight(r) ==
+		let cli = getClientByEmail(user)
+		in 
+			if isofclass(Client, cli)
+			then cli.getMilestone().setDesiredWeight(r)
+	pre userIsClient(user) = true and user <> "undefined";
+	
+	-- An user consults its own milestone
+	public consultMilestone : MyUtils`MyString ==> Milestone
+	consultMilestone(email) ==
+		let cli = getClientByEmail(email)
+		in 
+			if isofclass(Client, cli)
+			then return cli.getMilestone()
+			else return new Milestone()
+	pre (userIsClient(user) or userIsTrainer(user))
+		and user <> "undefined";
+		
+			
+	/*******************************************************/
+	/********************	  USER  	********************/
+	/*******************************************************/
+	
+	-- Returns all users
+	pure public getAllUsers : () ==> set of MyUtils`MyString
+	getAllUsers() == return allUsers;
+	
+	-- Returns user
+	public getUser : () ==> MyUtils`MyString
+	getUser() == return user;
+
+
+	/*******************************************************/
+	/********************	CLIENT 		********************/
+	/*******************************************************/
+	
+	-- Checks if user is a client
+	public pure userIsClient : MyUtils`MyString ==> bool
+	userIsClient(cli) == (
+		for all c in set clients do (
+			if cli = c.getEmail()
+			then return true
+		);
+		return false;
+	);
+	
+	-- Gets client by email
+	public getClientByEmail : MyUtils`MyString ==> Client
+	getClientByEmail(cli) == (
+		for all c in set clients do (
+			if cli = c.getEmail()
+			then return c;
+		);
+		return new Client();
+	)
+	pre userIsClient(cli);
+	
+	-- Gets current logged in user
+	public getCurrentClient : () ==> Client
+	getCurrentClient() == (
+		return getClientByEmail(user);
+	)
+	pre user <> "undefined" and userIsClient(user);
+	
+	-- Returns all registered clients
+	pure public getClients : () ==> set of Client
+	getClients() == return clients;
+	
+	-- Adds client to registered clients.
+	public addClient : Client ==> ()
+	addClient(client) == (
+		atomic(
+			clients := clients union {client};
+			allUsers := allUsers union {client.getEmail()}
+		);
+	)
+	pre ({client} inter clients = {}) and client.getEmail() not in set allUsers
+	post client in set clients and client.getEmail() in set allUsers;
+		
+	-- Removes client from registered clients
+	public removeClient : Client ==> ()
+	removeClient(client) == (
+		atomic(
+			clients := clients \ {client};
+			allUsers := allUsers \ {client.getEmail()}
+		);
+	)
+	pre client in set clients and client.getEmail() in set allUsers
+	post client not in set clients and {client.getEmail()} inter allUsers = {};
+	
+	
+	/*******************************************************/
+	/********************	TRAINERS	********************/
+	/*******************************************************/
+	
+	-- Returns all trainers
+	pure public getTrainers : () ==> set of Trainer
+	getTrainers() == return trainers;
+	
+	-- Checks if user is a trainer
+	public pure userIsTrainer : MyUtils`MyString ==> bool
+	userIsTrainer(email) == (
+		for all t in set trainers do (
+			if email = t.getEmail()
+			then return true
+		);
+		return false;
+	);
+		
+	-- Adds trainer to trainers. If can't add trainer, it returns false
+	public addTrainer : Trainer ==> ()
+	addTrainer(trainer) == (
+		atomic(
+			trainers := trainers union {trainer};
+			allUsers := allUsers union {trainer.getEmail()};
+		);
+	)
+	pre trainer not in set trainers and trainer.getEmail() not in set allUsers
+	post trainer in set trainers;
+		
+	-- Removes trainer from trainers
+	public removeTrainer : Trainer ==> ()
+	removeTrainer(trainer) ==
+	(
+		atomic(
+			trainers := trainers \ {trainer};
+			allUsers := allUsers \ {trainer.getEmail()};
+		);
+	)
+	pre ({trainer} subset trainers) = true and trainer.getEmail() in set allUsers
+	post ({trainer} subset trainers) = false;
+	
+	-- Gets trainer by email
+	public getTrainerByEmail : MyUtils`MyString ==> Trainer
+	getTrainerByEmail(email) == (
+		for all t in set trainers do (
+			if email = t.getEmail()
+			then return t;
+		);
+		return new Trainer();
+	)
+	pre userIsTrainer(email);
+	
+	
+	/*******************************************************/
+	/********************	EXERCISES	********************/
+	/*******************************************************/
+	
+	-- Gets alls exercises in exercises set
+	public getExercises : () ==> set of Exercise
+	getExercises() == (
+		return exercises;
+	);
+	
+	-- Checks if exercise exists
+	public pure exerciseExists : MyUtils`MyString ==> bool
+	exerciseExists(name) == (
+		for all ex in set exercises do (
+			if (name = ex.getName())
+			then return true;
+		);
+		return false;
+	);
+	
+	-- Gets exercise in exercises set by name
+	public getExercise : MyUtils`MyString ==> Exercise
+	getExercise(name) == (
+		for all ex in set exercises do (
+			if (name = ex.getName())
+			then return ex;
+		);
+		return new Exercise();
+	)
+	pre exerciseExists(name);
+	
+	-- Adds exercise to exercises set
+	public addExercise : Exercise ==> ()
+	addExercise(exercise) == (
+		exercises := exercises union {exercise}
+	)
+	pre not {exercise} subset exercises
+	post {exercise} subset exercises;
+	
+	-- Removes exercise from exercises set
+	public removeExercise : Exercise ==> ()
+	removeExercise(exercise) == (
+		exercises := exercises \ {exercise}
+	)
+	pre {exercise} subset exercises
+	post not {exercise} subset exercises;
+	
+	
+	/*******************************************************/
+	/******************		SERIES		********************/
+	/*******************************************************/
+	
+	-- Creates a series (load)
+	public createSeriesLoad : rat * nat1 * Exercise ==> Series
+	createSeriesLoad(l, r, e) == (
+		return new Series(l, r, e);
+	);
+	
+	-- Creates a series (time)
+	public createSeriesTime : nat1 * Exercise * nat ==> Series
+	createSeriesTime(r, e, t) == (
+		return new Series(r, e, t);
+	);
+	
+	/*******************************************************/
+	/********************      SET     *********************/
+	/*******************************************************/
+	
+	-- Creates a set
+	public createSet : () ==> MySet
+	createSet() == (
+		return new MySet();
+	);
+	
+	-- Add series to set
+	public addSeriesToSet : MySet * Series ==> ()
+	addSeriesToSet(s, srs) ==
+		s.addSeries(srs);
+	
+	/*******************************************************/
+	/******************	 TRAINING PLAN	********************/
+	/*******************************************************/
+	
+	-- A trainer creates a daily plan to add to the training plan of a client
+	public setDailyPlan : MyUtils`MyString * nat * MySet==> ()
+	setDailyPlan(email, day, s) == (
+		let cli = getClientByEmail(email)
+		in 
+			(
+				cli.getMilestone().getTrainingPlan().setDailyPlan(day, s);
+			)
+	)
+	pre userIsClient(email) and userIsTrainer(user);
+	
+	-- A trainer consults a daily plan of the training plan of a client
+	public getDailyPlan : MyUtils`MyString * nat==> MySet
+	getDailyPlan(email, day) == (
+		let cli = getClientByEmail(email)
+		in 
+			(
+				return cli.getMilestone().getTrainingPlan().getDailyPlan(day);
+			)
+	)
+	pre userIsClient(email) and ( userIsTrainer(user) or userIsClient(user));
+
+
+functions
+-- TODO Define functiones here
+traces
+-- TODO Define Combinatorial Test Traces here
+end IronTrainers

@@ -1,0 +1,68 @@
+class SetTest is subclass of Test
+types
+-- TODO Define types here
+values
+-- TODO Define values here
+instance variables
+
+	testLoad: rat := 120.0;
+	testTime: nat := 60;
+	testRepetitions: nat1 := 5;
+	
+	testExerciseName : seq of char := "testExerciseName";
+	testExerciseDescription : seq of char := "testExerciseDescription";
+	testExerciseBodyPart : Exercise`BodyPart := <Arm>;
+	
+	testExercise : Exercise := new Exercise(testExerciseName, testExerciseDescription, testExerciseBodyPart);
+	
+	testSeries1 : Series := new Series(testLoad, testRepetitions, testExercise);
+	testSeries2 : Series := new Series(testRepetitions, testExercise, testTime);
+	testSeries3 : Series := new Series(testLoad + 10.0, testRepetitions + 5, testExercise);
+	testSeries4 : Series := new Series(testRepetitions + 10, testExercise, testTime + 20);
+	
+	testSeriesSequence : seq of Series := [testSeries1, testSeries2, testSeries3];
+	
+	s1 : MySet := new MySet(testSeriesSequence);
+	s2 : MySet := new MySet();
+
+operations
+
+	private testConstructor: () ==> ()
+	testConstructor() == 
+	(
+		assertNotEquals(s1.getIndex(testSeries1), -1);
+		assertNotEquals(s1.getIndex(testSeries2), -1);
+		assertNotEquals(s1.getIndex(testSeries3), -1);
+		
+		assertEquals(s1.getSeries(), testSeriesSequence);
+				
+		assertEquals(s1.getIndex(testSeries4), -1);
+		
+		assertEquals(len s2.getSeries(), 0);
+	);
+	
+	private testAddSeries: () ==> ()
+	testAddSeries () ==
+	(
+		s1.addSeries(testSeries4);
+		assertNotEquals(s1.getIndex(testSeries4), -1);
+	);
+	
+	public static run: () ==> ()
+ 	run() ==
+ 	(
+ 		new SetTest().testConstructor();
+ 		new SetTest().testAddSeries();
+ 	);
+ 	
+ 	public getTestSet: () ==> MySet
+	getTestSet() ==
+	(
+		return s1;
+	);
+
+functions
+-- TODO Define functiones here
+traces
+-- TODO Define Combinatorial Test Traces here
+end SetTest

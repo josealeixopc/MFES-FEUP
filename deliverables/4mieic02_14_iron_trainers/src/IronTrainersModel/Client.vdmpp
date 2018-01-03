@@ -1,0 +1,81 @@
+class Client is subclass of User
+
+types
+	
+	public Sex = <F> | <M>
+		inv s == s = <F> or s = <M>;
+		
+values
+	
+instance variables
+	gender : Sex;
+	weight :  real;
+	height : nat;
+	birthDate : MyUtils`Date;
+	milestone : Milestone;
+	
+	-- Invariants
+	inv weight > 0 and height > 0;
+
+operations
+
+	-- Constructor
+	public Client : MyUtils`MyString * MyUtils`MyString * MyUtils`MyString * Sex * real * nat * MyUtils`Date ==> Client
+	Client(e, p, n, s, w, h, d) == (
+		gender := s;
+		weight := w;
+		height := h;
+		birthDate := d;
+		milestone := new Milestone(0.0);
+		User(e, p, n);
+	)
+	pre w > 0 and h > 0 
+	and d.day <= MyUtils`daysInMonth(d.month);
+	
+	-- Get gender
+	public getGender : () ==> Sex
+	getGender() == return gender
+	pre not gender = nil;
+	
+	-- Get weight
+	public getWeight : () ==> real
+	getWeight() == return weight;
+	
+	-- Get height
+	public getHeight : () ==> real
+	getHeight() == return height;
+	
+	-- Set weight
+	public setWeight : real ==> ()
+	setWeight(w) == weight := w
+	pre not w <= 0;
+	
+	-- Set height
+	public setHeight : nat ==> ()
+	setHeight(h) == height := h
+	pre not h <= 0;
+	
+	-- Get age
+	public getAge : () ==> nat
+	getAge() == return calculateAge(birthDate, MyUtils`getCurrentDate());
+	
+	-- Get milestone
+	public getMilestone : () ==> Milestone
+	getMilestone() == return milestone;
+	
+
+functions
+	
+	public calculateAge : MyUtils`Date * MyUtils`Date -> nat
+	calculateAge(d, c) == 
+		c.year - d.year
+	pre c.year > d.year and d.year > 0 
+		and c.month > 0 and c.month <= 12
+		and d.month > 0 and d.month <= 12
+		and c.day > 0 and c.day <= 31 -- TODO ESTA TUDO CEGO
+		and d.day > 0 and d.day <= 31; -- TODO WTF?
+		
+traces
+-- TODO Define Combinatorial Test Traces here
+
+end Client

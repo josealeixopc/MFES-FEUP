@@ -1,0 +1,73 @@
+class MySet
+types
+-- TODO Define types here
+values
+-- TODO Define values here
+instance variables
+	series : seq of Series;
+	
+operations
+	
+	public MySet : seq of Series ==> MySet
+	MySet(s) == (
+		series := s;
+	);
+	
+	public MySet : () ==> MySet
+	MySet() == (
+		series := [];
+	);
+	
+	public getSeries : () ==> seq of Series 
+	getSeries() == return series;
+	
+	-- Verifies if an element s exists in seq. If so, returns its index, else returns -1.
+	private getIndex : Series * seq of Series * int ==> int
+	getIndex(s, list, index) ==
+	
+		if len list = 0
+		then return -1
+		
+		else if (s = hd list)
+		then return index
+		
+		else getIndex(s, tl list, index + 1)
+		
+	pre index >= 0 and len list >= 0;
+		
+	-- Verifies if an element s exists in seq. If so, returns its index, else returns -1.
+	public getIndex : Series ==> int
+	getIndex(s) ==
+		return getIndex(s, series, 0);
+		
+		
+	-- Adds series to series
+	public addSeries : Series ==> ()
+	addSeries(s) ==
+		if getIndex(s) = -1
+		then series	:= series ^ [s];
+		
+	
+	/*public removeSeries : Series ==> ()
+	removeSeries(s) ==
+	(
+		dcl i : int := getIndex(s, series, 0);
+		if i <> -1
+		then (
+			if i = 0
+			then series := tl series
+			
+			else if i = len series - 1
+			then series := [series(0)]
+			
+			else series := series(0, i-1) ^ series(i+1, len series - 1)
+		)
+	);*/
+	
+functions
+
+	
+		
+traces
+-- TODO Define Combinatorial Test Traces here
+end MySet

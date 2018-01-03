@@ -1,0 +1,58 @@
+class Test
+types
+-- TODO Define types here
+values
+-- TODO Define values here
+instance variables
+-- TODO Define instance variables here
+operations
+
+	-- fails if expected is not equal to actual	
+	protected static assertEquals: ? * ? ==> ()
+	assertEquals(expected, actual) == 
+		if expected <> actual then
+		(
+			IO`print("Actual value(");
+			IO`print(actual);
+			IO`print(") different from expected (");
+			IO`print(expected);
+			IO`print(")\n");
+		)
+	post expected = actual;
+	
+	protected static assertNotEquals: ? * ? ==> ()
+	assertNotEquals(expected, actual) == 
+		if expected = actual then
+		(
+			IO`print("Actual value(");
+			IO`print(actual);
+			IO`print(") equal is equal to expected (");
+			IO`print(expected);
+			IO`print(") when it SHOULDN'T be.\n");
+		)
+	post expected <> actual;
+	
+	public static run: () ==> ()
+ 	run() ==
+ 	(
+ 		UserTest`run();
+ 		TrainerTest`run();
+ 		ClientTest`run();
+ 		
+ 		MilestoneTest`run();
+ 		
+ 		ExerciseTest`run();
+ 		SeriesTest`run();
+ 		SetTest`run();
+ 		TrainingPlanTest`run();
+ 		
+ 		IronTrainersTest`run();
+ 		
+ 		TestCases`run();
+ 	);
+		
+functions
+-- TODO Define functiones here
+traces
+-- TODO Define Combinatorial Test Traces here
+end Test

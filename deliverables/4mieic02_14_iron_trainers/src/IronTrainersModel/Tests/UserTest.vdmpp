@@ -1,0 +1,71 @@
+class UserTest is subclass of Test
+types
+-- TODO Define types here
+values
+-- TODO Define values here
+instance variables
+
+	testEmail: seq of char := "testEmail";
+	testPassword: seq of char := "testPassword";
+	testName: seq of char := "testName";
+	testMobileNumber : int := 911911911;
+	
+	emptyEmail: seq of char := "";
+	emptyPassword: seq of char := "";
+	emptyName: seq of char := "";
+	
+	invalidMobileNumber1: int := 911;
+	invalidMobileNumber2: int := 199119119;
+	
+	u1 : User := new User(testEmail, testPassword, testName);
+	u2 : User := new User(testEmail, testPassword, testName, testMobileNumber);
+
+operations
+	
+	private testConstructor: () ==> ()
+	testConstructor() == 
+	(
+		assertEquals(u1.getEmail(), testEmail);
+		assertEquals(u1.getPassword(), testPassword);
+		assertEquals(u1.getName(), testName);
+		
+		assertEquals(u2.getEmail(), testEmail);
+		assertEquals(u2.getPassword(), testPassword);
+		assertEquals(u2.getName(), testName);
+		assertEquals(u2.getMobileNumber(), testMobileNumber);
+	);
+	
+	private testWithEmptyInputs: () ==> ()
+	testWithEmptyInputs() ==
+	(
+		assertEquals(new User(emptyEmail, emptyPassword, emptyName), nil);
+	);
+	
+	private testWithInvalidMobileNumber: () ==> ()
+	testWithInvalidMobileNumber() ==
+	(
+		--assertEquals(new User(testEmail, testPassword, testName, invalidMobileNumber1),nil);
+		assertEquals(new User(testEmail, testPassword, testName, invalidMobileNumber2),nil);
+	);
+	
+	public static run: () ==> ()
+ 	run() ==
+ 	(
+ 		new UserTest().testConstructor();
+ 		--new UserTest().testWithInvalidMobileNumber();	-- does not respect mobile number pre-condition
+ 		--new UserTest().testWithEmptyInputs();
+ 	);
+			
+functions
+-- TODO Define functiones here
+traces
+-- test cases will be generated in all possible combinations
+-- must use the 'Combinatory Testing' (CT) perspective
+-- calls u.getName() 1 to 5 times when selecting Full Evaluation
+-- if we use 'Filtered Evaluation' we can random the number of times it is called
+-- these tests do not account for coverage
+
+	GetNameSeveralTimes:
+		u1.getName(){1, 5};
+
+end UserTest

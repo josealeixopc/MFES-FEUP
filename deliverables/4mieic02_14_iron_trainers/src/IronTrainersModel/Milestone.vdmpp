@@ -1,0 +1,34 @@
+class Milestone
+
+instance variables
+	desiredWeight : rat;
+	trainingPlan : TrainingPlan;
+	
+	-- Invariants
+	inv desiredWeight >= 0;
+	
+operations
+
+	public Milestone : rat ==> Milestone
+	Milestone(d) == (
+		desiredWeight := d;
+		trainingPlan := new TrainingPlan();
+	)
+	pre d >= 0;
+	
+	public getDesiredWeight : () ==> rat
+	getDesiredWeight() == return desiredWeight;
+	
+	public getTrainingPlan : () ==> TrainingPlan
+	getTrainingPlan() == return trainingPlan;
+	
+	public setDesiredWeight : rat ==> ()
+	setDesiredWeight(w) == 
+		desiredWeight := w
+	pre w >= 0;
+	
+functions
+-- TODO Define functiones here
+traces
+-- TODO Define Combinatorial Test Traces here
+end Milestone

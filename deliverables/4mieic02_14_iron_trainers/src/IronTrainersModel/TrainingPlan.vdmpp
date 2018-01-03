@@ -1,0 +1,34 @@
+class TrainingPlan
+types
+
+values
+-- TODO Define values here
+instance variables
+	plan : map nat1 to MySet;
+		
+operations	
+
+	public TrainingPlan : () ==> TrainingPlan
+	TrainingPlan() == (
+		plan := { |-> }; -- empty map
+	);
+	
+	public getPlan : () ==> map nat1 to MySet
+	getPlan() ==
+		return plan;
+	
+	public getDailyPlan : nat ==> MySet
+	getDailyPlan(day) == 
+		return plan(day)
+		pre day > 0;
+	
+	public setDailyPlan : nat * MySet ==> ()
+	setDailyPlan(day, p) == 
+		plan(day) := p
+		pre day > 0;
+	
+functions
+-- TODO Define functiones here
+traces
+-- TODO Define Combinatorial Test Traces here
+end TrainingPlan

@@ -1,0 +1,35 @@
+class TrainerTest is subclass of Test
+types
+-- TODO Define types here
+values
+-- TODO Define values here
+instance variables
+
+	testEmail: seq of char := "testEmail";
+	testPassword: seq of char := "testPassword";
+	testName: seq of char := "testName";
+	testMobileNumber : int := 911911911;
+	
+	t1 : Trainer := new Trainer(testEmail, testPassword, testName);
+	
+operations
+	
+	private testConstructor: () ==> ()
+	testConstructor() == 
+	(
+		assertEquals(t1.getEmail(), testEmail);
+		assertEquals(t1.getPassword(), testPassword);
+		assertEquals(t1.getName(), testName);
+	);
+	
+	public static run: () ==> ()
+ 	run() ==
+ 	(
+ 		new TrainerTest().testConstructor();
+ 	);
+
+functions
+-- TODO Define functiones here
+traces
+-- TODO Define Combinatorial Test Traces here
+end TrainerTest

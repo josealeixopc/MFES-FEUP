@@ -21,6 +21,7 @@ public class CLI {
     private Menu trainerMenu;
     private Menu exerciseMenu;
     private Menu profileMenu;
+    private Menu clientTrainingPlanMenu;
 
     // FIELDS
     private Field emailField;
@@ -29,6 +30,7 @@ public class CLI {
     private Field genderField;
     private Field weightField;
     private Field heightField;
+    private Field dayField;
     private Field birthYearField;
     private Field birthMonthField;
     private Field birthDayField;
@@ -88,6 +90,7 @@ public class CLI {
         createTrainerMenu();
         createExerciseMenu();
         createProfileMenu();
+        createClientTrainingPlanMenu();
     }
 
     private void createInitialMenu(){
@@ -110,6 +113,25 @@ public class CLI {
         };
     }
 
+    private void createClientTrainingPlanMenu(){
+        ArrayList<String> options = new ArrayList<>();
+        options.add("See Another Training Plan");
+
+        this.clientTrainingPlanMenu = new Menu(this.scanner, "Training Plan Menu", options, clientMenu) {
+            @Override
+            void selectedOptionTrigger(int selectedOption) {
+                switch (selectedOption) {
+                    case 1:
+                        String user = ironTrainers.getUser();
+                        showTrainingPlanInformation(user);
+                        clientTrainingPlanMenu.show();
+                       break;
+                    default: break;
+                }
+            }
+        };
+    }
+
     private void createClientMenu(){
         ArrayList<String> options = new ArrayList<>();
         options.add("My Profile");
@@ -125,7 +147,9 @@ public class CLI {
                         profileMenu.show();
                         break;
                     case 2:
-
+                        String user = ironTrainers.getUser();
+                        showTrainingPlanInformation(user);
+                        clientTrainingPlanMenu.show();
                         break;
                     case 3:
 
@@ -188,6 +212,29 @@ public class CLI {
                 }
             }
         };
+    }
+
+    private void showTrainingPlanInformation(String name){
+
+        Number day = null;
+        boolean valid = false;
+
+        while (!valid) {
+            System.out.println("Choose a day: ");
+            if (scanner.hasNextInt()) {
+                day = scanner.nextInt(); // Scans the next token of the input as an int.
+                valid = true;
+            }
+            else{
+                scanner.next();
+            }
+        }
+        try {
+            System.out.println(ironTrainers.getDailyPlan(name, day));
+        }
+        catch (Exception e){
+            System.out.println("There's no training plan for day " + day);
+        }
     }
 
     private void editWeight(){
@@ -264,7 +311,6 @@ public class CLI {
                 System.out.println("Wrong username or password.");
                 initialMenu.show();
             }
-
         }
     }
 
@@ -432,6 +478,19 @@ public class CLI {
         };
 
         heightField = new Field(scanner, "Height"){
+
+            @Override
+            protected boolean canInputBeParsed() {
+                try{
+                    Integer.parseInt(this.input);
+                    return true;
+                }catch (Exception e){
+                    return false;
+                }
+            }
+        };
+
+        dayField = new Field(scanner, "Day"){
 
             @Override
             protected boolean canInputBeParsed() {

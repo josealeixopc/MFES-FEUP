@@ -17,6 +17,7 @@ public class CLI {
     private Menu clientMenu;
     private Menu trainerMenu;
     private Menu exerciseMenu;
+    private Menu milestoneMenu;
 
     // FIELDS
     private Field emailField;
@@ -101,6 +102,7 @@ public class CLI {
         Client c1 = ironTrainers.getClientByEmail("client1@mfes.com");
 
         Milestone m1 = c1.getMilestone();
+        m1.setDesiredWeight(100);
         m1.getTrainingPlan().setDailyPlan(1, set1);
         m1.getTrainingPlan().setDailyPlan(2, set2);
     }
@@ -159,15 +161,14 @@ public class CLI {
     private void createTrainerMenu(){
         ArrayList<String> options = new ArrayList<>();
         options.add("Exercises");
-        options.add("Series");
-        options.add("Sets");
-        options.add("Milestones");
+        options.add("Clients' Milestones");
 
         this.trainerMenu = new Menu(this.scanner, "Trainer Menu", options, initialMenu) {
             @Override
             void selectedOptionTrigger(int selectedOption) {
                 switch (selectedOption) {
                     case 1: exerciseMenu.show(); break;
+                    case 2: showSearchClientForm();
                     default: break;
                 }
             }
@@ -179,12 +180,29 @@ public class CLI {
         options.add("Add Exercise");
         options.add("See Exercises");
 
-        this.exerciseMenu = new Menu(this.scanner, "Trainer Menu", options, initialMenu) {
+        this.exerciseMenu = new Menu(this.scanner, "Exercises Menu", options, trainerMenu) {
             @Override
             void selectedOptionTrigger(int selectedOption) {
                 switch (selectedOption) {
                     case 1: showCreateExerciseForm(); break;
                     case 2: showAllExercises(); break;
+                    default: break;
+                }
+            }
+        };
+    }
+
+    private void changeMilestoneMenu(Client c){
+        ArrayList<String> options = new ArrayList<>();
+        options.add("See milestone");
+        options.add("Change training plan");
+
+        this.milestoneMenu = new Menu(this.scanner, "Client " + c.getName() + " milestones", options, trainerMenu) {
+            @Override
+            void selectedOptionTrigger(int selectedOption) {
+                switch (selectedOption) {
+                    case 1: showClientMilestone(c); break;
+                    case 2: break;
                     default: break;
                 }
             }
@@ -361,6 +379,43 @@ public class CLI {
 
             exerciseMenu.show();
         }
+    }
+
+    private void showSearchClientForm(){
+        String email;
+
+        ArrayList<Field> fields = new ArrayList<>();
+        fields.add(emailField);
+
+        Form createExercise = new Form("Search client", fields);
+        createExercise.showForm();
+        boolean submit = createExercise.submitForm(scanner);
+
+        if(!submit){
+            trainerMenu.show();
+        }
+        else {
+            email = emailField.getInput();
+
+            Client client = this.ironTrainers.getClientByEmail(email);
+
+            if(client.getEmail() != null){
+                changeMilestoneMenu(client);
+                milestoneMenu.show();
+            }
+            else{
+                System.out.println("A client with that email does not exist.");
+                trainerMenu.show();
+            }
+        }
+    }
+
+    private void showClientMilestone(Client c){
+        System.out.println("MILESTONE\n");
+        System.out.println("Desired weight: " + c.getMilestone().getDesiredWeight());
+        System.out.println("Current training plan: " + c.getMilestone().getTrainingPlan().toString());
+
+        clientMenu.show();
     }
 
     private void showAllExercises(){

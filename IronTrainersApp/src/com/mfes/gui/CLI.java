@@ -21,7 +21,7 @@ public class CLI {
     private Menu profileMenu;
     private Menu clientTrainingPlanMenu;
     private Menu clientMilestone;
-    private Menu milestoneMenu;
+    private Menu milestoneTrainerMenu;
 
     // FIELDS
     private Field emailField;
@@ -40,6 +40,8 @@ public class CLI {
     private Field exerciseNumRepsField;
     private Field exerciseTimeField;
     private Field exerciseLoadField;
+
+    private Field trainingPlanDayField;
 
     CLI() {
         this.scanner = new Scanner(System.in);
@@ -269,17 +271,17 @@ public class CLI {
         };
     }
 
-    private void changeMilestoneMenu(Client c){
+    private void createMileStoneMenu(Client c){
         ArrayList<String> options = new ArrayList<>();
         options.add("See milestone");
         options.add("Change training plan");
 
-        this.milestoneMenu = new Menu(this.scanner, "Client " + c.getName() + " milestones", options, trainerMenu) {
+        this.milestoneTrainerMenu = new Menu(this.scanner, "Client " + c.getName() + " milestones", options, trainerMenu) {
             @Override
             void selectedOptionTrigger(int selectedOption) {
                 switch (selectedOption) {
                     case 1: showClientMilestone(c); break;
-                    case 2: break;
+                    case 2: changeTrainingPlanForm(c); break;
                     default: break;
                 }
             }
@@ -617,8 +619,8 @@ public class CLI {
             Client client = this.ironTrainers.getClientByEmail(email);
 
             if(client.getEmail() != null){
-                changeMilestoneMenu(client);
-                milestoneMenu.show();
+                createMileStoneMenu(client);
+                milestoneTrainerMenu.show();
             }
             else{
                 System.out.println("A client with that email does not exist.");
@@ -632,11 +634,10 @@ public class CLI {
         System.out.println("Desired weight: " + c.getMilestone().getDesiredWeight());
         System.out.println("Current training plan: " + c.getMilestone().getTrainingPlan().toString());
 
-        clientMenu.show();
+        milestoneTrainerMenu.show();
     }
 
-    private void showAllExercises(){
-
+    private void printAllExercises(){
         System.out.println("** EXERCISES ** \n");
 
         VDMSet exercises = this.ironTrainers.getExercises();
@@ -647,10 +648,29 @@ public class CLI {
         }
     }
 
+    private void showAllExercises(){
+        printAllExercises();
+        exerciseMenu.show();
+    }
+
     private void changeTrainingPlanForm(Client c){
 
-        int dayToChange;
+        int dayToChange = 0;
         MySet exerciseSet = new MySet();
+
+        ArrayList<Field> tpFields = new ArrayList<>();
+        tpFields.add(trainingPlanDayField);
+
+        Form changeTrainingPlan = new Form("Change daily plan", tpFields);
+        changeTrainingPlan.showForm();
+        boolean tpSubmit = changeTrainingPlan.submitForm(scanner);
+
+        if(!tpSubmit){
+            milestoneTrainerMenu.show();
+        }
+        else {
+            dayToChange = Integer.parseInt(trainingPlanDayField.getInput());
+        }
 
         while(true){
 
@@ -677,8 +697,17 @@ public class CLI {
                 numReps = Integer.parseInt(exerciseNumRepsField.getInput());
                 timeSeconds = Integer.parseInt(exerciseTimeField.getInput());
 
-                Series s = new Series(numReps, this.ironTrainers.getExercise(exerciseName), timeSeconds);
-                exerciseSet.addSeries(s);
+                Exercise exercise = this.ironTrainers.getExercise(exerciseName);
+
+                if(exercise.getName() == null){
+                    System.out.println("An exercise with that name does not exist. Pick one of the next.");
+                    printAllExercises();
+                    continue;
+                }
+                else {
+                    Series s = new Series(numReps, exercise, timeSeconds);
+                    exerciseSet.addSeries(s);
+                }
             }
 
             System.out.println("Do you want to add another series? Yes or no: ");
@@ -691,8 +720,9 @@ public class CLI {
             }
         }
 
-
-        // TODO: ADD 'exerciseSet' to the day given
+        c.getMilestone().getTrainingPlan().setDailyPlan(dayToChange, exerciseSet);
+        System.out.println("Changed set of exercises of day: " + dayToChange);
+        milestoneTrainerMenu.show();
     }
 
     private void createFields(){
@@ -850,6 +880,19 @@ public class CLI {
         };
 
         exerciseLoadField = new Field(scanner, "Load in kg"){
+            @Override
+            protected boolean canInputBeParsed() {
+                try{
+                    Integer.parseInt(this.input);
+                    return true;
+                }catch (Exception e){
+                    return false;
+                }
+            }
+        };
+
+        trainingPlanDayField = new Field(scanner, "Day of training plan"){
+
             @Override
             protected boolean canInputBeParsed() {
                 try{

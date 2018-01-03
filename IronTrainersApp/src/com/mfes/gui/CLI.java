@@ -2,6 +2,7 @@ package com.mfes.gui;
 
 import com.mfes.model.*;
 import com.mfes.model.quotes.*;
+import org.overture.codegen.runtime.VDMSeq;
 import org.overture.codegen.runtime.VDMSet;
 
 import java.util.ArrayList;
@@ -27,16 +28,13 @@ public class CLI {
     private Field genderField;
     private Field weightField;
     private Field heightField;
-    private Field dayField;
     private Field birthYearField;
     private Field birthMonthField;
     private Field birthDayField;
 
-
     private Field exerciseNameField;
     private Field exerciseDescriptionField;
     private Field exerciseBodyPartField;
-
 
     CLI() {
         this.scanner = new Scanner(System.in);
@@ -265,10 +263,22 @@ public class CLI {
             }
         }
         try {
-            System.out.println(ironTrainers.getDailyPlan(name, day));
+            MySet set = ironTrainers.getDailyPlan(name, day);
+            printSeries(set);
+            //System.out.println(ironTrainers.getDailyPlan(name, day));
         }
         catch (Exception e){
             System.out.println("There's no training plan for day " + day);
+        }
+    }
+
+    private void printSeries(MySet set){
+
+        VDMSeq series = set.getSeries();
+
+        for(Object serie : series){
+            Series s = (Series) serie;
+            System.out.println(s.toString());
         }
     }
 
@@ -561,19 +571,6 @@ public class CLI {
         };
 
         heightField = new Field(scanner, "Height"){
-
-            @Override
-            protected boolean canInputBeParsed() {
-                try{
-                    Integer.parseInt(this.input);
-                    return true;
-                }catch (Exception e){
-                    return false;
-                }
-            }
-        };
-
-        dayField = new Field(scanner, "Day"){
 
             @Override
             protected boolean canInputBeParsed() {

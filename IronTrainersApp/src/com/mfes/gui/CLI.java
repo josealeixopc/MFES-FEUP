@@ -283,7 +283,6 @@ public class CLI {
         try {
             MySet set = ironTrainers.getDailyPlan(name, day);
             printSeries(set);
-            //System.out.println(ironTrainers.getDailyPlan(name, day));
         }
         catch (Exception e){
             System.out.println("There's no training plan for day " + day);
@@ -295,10 +294,27 @@ public class CLI {
     private void printSeries(MySet set){
 
         VDMSeq series = set.getSeries();
+        int i = 1;
 
         for(Object serie : series){
             Series s = (Series) serie;
-            System.out.println(s.toString());
+
+            System.out.println("\nSeries no. " + i + "\n");
+
+            if (s.getLoad() != null)
+                System.out.println("Load: " + s.getLoad() + " kg");
+
+            if (s.getTime() != null)
+                System.out.println("Time: " + s.getLoad() + " s");
+
+            System.out.println("Number of Repetitions: " + s.getNumberOfRepetitions() + " times");
+
+            System.out.println("Exercise name: " + s.getExercise().getName());
+            System.out.println("Exercise description: " + s.getExercise().getDescription());
+            System.out.println("Exercise body part: " + s.getExercise().getBodyPart());
+            System.out.println();
+
+            i++;
         }
     }
 

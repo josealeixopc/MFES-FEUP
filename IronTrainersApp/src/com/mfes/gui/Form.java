@@ -15,8 +15,7 @@ public class Form {
 
     public void showForm(){
 
-        System.out.println("** " + name + " **");
-        System.out.println();
+        System.out.println("\n** " + name + " **\n");
 
         for(int i = 0; i < fields.size(); i++){
 

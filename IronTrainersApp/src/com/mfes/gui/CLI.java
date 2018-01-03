@@ -2,6 +2,7 @@ package com.mfes.gui;
 
 import com.mfes.model.*;
 import com.mfes.model.quotes.*;
+import org.overture.codegen.runtime.VDMSeq;
 import org.overture.codegen.runtime.VDMSet;
 
 import java.util.ArrayList;
@@ -17,6 +18,9 @@ public class CLI {
     private Menu clientMenu;
     private Menu trainerMenu;
     private Menu exerciseMenu;
+    private Menu profileMenu;
+    private Menu clientTrainingPlanMenu;
+    private Menu clientMilestone;
     private Menu milestoneMenu;
 
     // FIELDS
@@ -30,14 +34,12 @@ public class CLI {
     private Field birthMonthField;
     private Field birthDayField;
 
-
     private Field exerciseNameField;
     private Field exerciseDescriptionField;
     private Field exerciseBodyPartField;
     private Field exerciseNumRepsField;
     private Field exerciseTimeField;
     private Field exerciseLoadField;
-
 
     CLI() {
         this.scanner = new Scanner(System.in);
@@ -124,6 +126,9 @@ public class CLI {
         createClientMenu();
         createTrainerMenu();
         createExerciseMenu();
+        createProfileMenu();
+        createClientTrainingPlanMenu();
+        createClientMilestoneMenu();
     }
 
     private void createInitialMenu(){
@@ -146,15 +151,84 @@ public class CLI {
         };
     }
 
-    private void createClientMenu(){
+    private void createClientTrainingPlanMenu(){
         ArrayList<String> options = new ArrayList<>();
-        options.add("My Training Plan");
-        options.add("My Milestones");
+        options.add("See Another Training Plan");
 
-        this.clientMenu = new Menu(this.scanner, "Client Menu", options, initialMenu) {
+        this.clientTrainingPlanMenu = new Menu(this.scanner, "Training Plan Menu", options, clientMenu) {
             @Override
             void selectedOptionTrigger(int selectedOption) {
                 switch (selectedOption) {
+                    case 1:
+                        String user = ironTrainers.getUser();
+                        showTrainingPlanInformation(user);
+                       break;
+                    default: break;
+                }
+            }
+        };
+    }
+
+    private void createClientMenu(){
+        ArrayList<String> options = new ArrayList<>();
+        options.add("My Profile");
+        options.add("My Training Plan");
+        options.add("My Milestones");
+
+        this.clientMenu = new Menu(this.scanner, "Client Menu", options) {
+            @Override
+            void selectedOptionTrigger(int selectedOption) {
+                switch (selectedOption) {
+                    case 1:
+                        showProfileInformation();
+                        profileMenu.show();
+                        break;
+                    case 2:
+                        String user = ironTrainers.getUser();
+                        showTrainingPlanInformation(user);
+                        break;
+                    case 3:
+                        showClientMilestone();
+                        clientMilestone.show();
+                        break;
+                    default: break;
+                }
+            }
+        };
+    }
+
+    private void createProfileMenu(){
+        ArrayList<String> options = new ArrayList<>();
+        options.add("Edit Weight");
+        options.add("Edit Height");
+
+        this.profileMenu = new Menu(this.scanner, "Profile Menu", options, clientMenu) {
+            @Override
+            void selectedOptionTrigger(int selectedOption) {
+                switch (selectedOption) {
+                    case 1:
+                        editWeight();
+                        break;
+                    case 2:
+                        editHeight();
+                        break;
+                    default: break;
+                }
+            }
+        };
+    }
+
+    private void createClientMilestoneMenu(){
+        ArrayList<String> options = new ArrayList<>();
+        options.add("Edit Desired Weight");
+
+        this.clientMilestone = new Menu(this.scanner, "Profile Menu", options, clientMenu) {
+            @Override
+            void selectedOptionTrigger(int selectedOption) {
+                switch (selectedOption) {
+                    case 1:
+                        editDesiredWeight();
+                        break;
                     default: break;
                 }
             }
@@ -212,6 +286,125 @@ public class CLI {
         };
     }
 
+    private void showTrainingPlanInformation(String name){
+
+        Number day = null;
+        boolean valid = false;
+
+        while (!valid) {
+            System.out.println("Choose a day: ");
+            if (scanner.hasNextInt()) {
+                day = scanner.nextInt(); // Scans the next token of the input as an int.
+                valid = true;
+            }
+            else{
+                scanner.next();
+            }
+        }
+        try {
+            MySet set = ironTrainers.getDailyPlan(name, day);
+            printSeries(set);
+        }
+        catch (Exception e){
+            System.out.println("There's no training plan for day " + day);
+        }
+
+        clientTrainingPlanMenu.show();
+    }
+
+    private void printSeries(MySet set){
+
+        VDMSeq series = set.getSeries();
+        int i = 1;
+
+        for(Object serie : series){
+            Series s = (Series) serie;
+
+            System.out.println("\nSeries no. " + i + "\n");
+
+            if (s.getLoad() != null)
+                System.out.println("Load: " + s.getLoad() + " kg");
+
+            if (s.getTime() != null)
+                System.out.println("Time: " + s.getLoad() + " s");
+
+            System.out.println("Number of Repetitions: " + s.getNumberOfRepetitions() + " times");
+
+            System.out.println("Exercise name: " + s.getExercise().getName());
+            System.out.println("Exercise description: " + s.getExercise().getDescription());
+            System.out.println("Exercise body part: " + s.getExercise().getBodyPart());
+            System.out.println();
+
+            i++;
+        }
+    }
+
+    private void editWeight(){
+
+        Number weight;
+        Client client = ironTrainers.getClientByEmail(ironTrainers.getUser());
+
+        ArrayList<Field> fields = new ArrayList<>();
+        fields.add(weightField);
+
+        Form editWeight = new Form("Edit Weight Form", fields);
+        editWeight.showForm();
+        boolean submit = editWeight.submitForm(scanner);
+
+        if (!submit){
+            profileMenu.show();
+        }
+        else{
+            weight = Float.parseFloat(weightField.getInput());
+            client.setWeight(weight);
+            clientMenu.show();
+        }
+    }
+
+    private void editDesiredWeight(){
+
+        Number weight;
+        Client client = ironTrainers.getClientByEmail(ironTrainers.getUser());
+
+        ArrayList<Field> fields = new ArrayList<>();
+        fields.add(weightField);
+
+        Form editDesiredWeight = new Form("Edit Client Milestone Form", fields);
+        editDesiredWeight.showForm();
+        boolean submit = editDesiredWeight.submitForm(scanner);
+
+        if (!submit){
+            clientMilestone.show();
+        }
+        else{
+            weight = Float.parseFloat(weightField.getInput());
+            client.getMilestone().setDesiredWeight(weight);
+            clientMenu.show();
+        }
+    }
+
+    private void editHeight(){
+
+        Number height;
+        Client client = ironTrainers.getClientByEmail(ironTrainers.getUser());
+
+        ArrayList<Field> fields = new ArrayList<>();
+        fields.add(heightField);
+
+        Form editHeight = new Form("Edit Height Form", fields);
+        editHeight.showForm();
+        boolean submit = editHeight.submitForm(scanner);
+
+        if (!submit){
+            profileMenu.show();
+        }
+        else{
+            height = Integer.parseInt(heightField.getInput());
+            client.setHeight(height);
+            clientMenu.show();
+        }
+    }
+
     private void showLoginFormClient(){
 
         String clientEmail;
@@ -242,7 +435,6 @@ public class CLI {
                 System.out.println("Wrong username or password.");
                 initialMenu.show();
             }
-
         }
     }
 
@@ -342,6 +534,28 @@ public class CLI {
 
             initialMenu.show();
         }
+    }
+
+    private void showProfileInformation(){
+        Client client = ironTrainers.getClientByEmail(ironTrainers.getUser());
+
+        System.out.println("\nMy Profile Information\n");
+
+        if (client.getGender().toString() == "<F>")
+            System.out.println("Gender: Female");
+        else
+            System.out.println("Gender: Male");
+
+        System.out.println("Height: " + client.getHeight());
+        System.out.println("Weight: " + client.getWeight());
+        System.out.println("Age: " + client.getAge());
+    }
+
+    private void showClientMilestone(){
+        Client client = ironTrainers.getClientByEmail(ironTrainers.getUser());
+
+        System.out.println("\nMy Milestone\n");
+        System.out.println("Desired Weight: " + client.getMilestone().getDesiredWeight());
     }
 
     private void showCreateExerciseForm(){

@@ -1,7 +1,7 @@
 package com.mfes.model;
-
 import java.util.*;
 
+import com.mfes.model.Client;
 import org.overture.codegen.runtime.*;
 
 @SuppressWarnings("all")

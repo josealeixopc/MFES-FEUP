@@ -1,11 +1,8 @@
 package com.mfes.gui;
 
-import com.mfes.model.Client;
-import com.mfes.model.IronTrainers;
-import com.mfes.model.MyUtils;
-import com.mfes.model.Trainer;
-import com.mfes.model.quotes.FQuote;
-import com.mfes.model.quotes.MQuote;
+import com.mfes.model.*;
+import com.mfes.model.quotes.*;
+import org.overture.codegen.runtime.VDMSet;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -43,6 +40,7 @@ public class CLI {
         this.ironTrainers = new IronTrainers();
 
         createDummyUsers();
+        createDummyMilestones();
         createMenus();
         createFields();
     }
@@ -65,11 +63,46 @@ public class CLI {
         // Trainer
         Trainer t1 = new Trainer("trainer1@mfes.com", "mfes", "Trainer1");
 
+        // TODO: comment this:
+        Trainer test = new Trainer("t", "t", "t");
+        this.ironTrainers.addTrainer(test);
+
         this.ironTrainers.addClient(c1);
         this.ironTrainers.addClient(c2);
         this.ironTrainers.addClient(c3);
 
         this.ironTrainers.addTrainer(t1);
+    }
+
+    private void createDummyMilestones(){
+        Exercise e1 = new Exercise("Push up", "Push yourself off the ground, using only your arms' strength.", ArmQuote.getInstance());
+        Exercise e2 = new Exercise("Sit up", "Lying down on the ground, elevate your upper body using abdominal strength.", ChestQuote.getInstance());
+        Exercise e3 = new Exercise("Squat", "Bend your knees and lift your weight using your leg strength.", LegQuote.getInstance());
+        Exercise e4 = new Exercise("Pull up", "Grab a bar and pull your body weight so that your chin touches the bar.", BackQuote.getInstance());
+
+        Exercise e5 = new Exercise("Jogging", "Using no weights at all, run with low intensity.", LegQuote.getInstance());
+
+        this.ironTrainers.addExercise(e1);
+        this.ironTrainers.addExercise(e2);
+        this.ironTrainers.addExercise(e3);
+        this.ironTrainers.addExercise(e4);
+        this.ironTrainers.addExercise(e5);
+
+        Series s1 = new Series(120, 5, e1);
+        Series s2 = new Series(1, e5, 120);
+
+        MySet set1 = new MySet();
+        set1.addSeries(s1);
+        set1.addSeries(s2);
+
+        MySet set2 = new MySet();
+        set1.addSeries(s1);
+
+        Client c1 = ironTrainers.getClientByEmail("client1@mfes.com");
+
+        Milestone m1 = c1.getMilestone();
+        m1.getTrainingPlan().setDailyPlan(1, set1);
+        m1.getTrainingPlan().setDailyPlan(2, set2);
     }
 
     private void showAppBanner(){
@@ -150,6 +183,8 @@ public class CLI {
             @Override
             void selectedOptionTrigger(int selectedOption) {
                 switch (selectedOption) {
+                    case 1: showCreateExerciseForm(); break;
+                    case 2: showAllExercises(); break;
                     default: break;
                 }
             }
@@ -289,7 +324,55 @@ public class CLI {
     }
 
     private void showCreateExerciseForm(){
-        /**/
+        String name;
+        String description;
+        String bodyPart;
+
+        ArrayList<Field> fields = new ArrayList<>();
+        fields.add(exerciseNameField);
+        fields.add(exerciseDescriptionField);
+        fields.add(exerciseBodyPartField);
+
+        Form createExercise = new Form("Create Exercise", fields);
+        createExercise.showForm();
+        boolean submit = createExercise.submitForm(scanner);
+
+        if(!submit){
+            initialMenu.show();
+        }
+        else {
+            name = exerciseNameField.getInput();
+            description = exerciseDescriptionField.getInput();
+            bodyPart = exerciseBodyPartField.getInput();
+
+            Exercise exercise;
+            if(bodyPart.equalsIgnoreCase("arm")){
+                exercise = new Exercise(name, description, ArmQuote.getInstance());
+            } else if(bodyPart.equalsIgnoreCase("back")){
+                exercise = new Exercise(name, description, BackQuote.getInstance());
+            } else if (bodyPart.equalsIgnoreCase("chest")){
+                exercise = new Exercise(name, description, ChestQuote.getInstance());
+            } else {
+                exercise = new Exercise(name, description, LegQuote.getInstance());
+            }
+
+            ironTrainers.addExercise(exercise);
+            System.out.println("Added exercise: " + exercise.toString());
+
+            exerciseMenu.show();
+        }
+    }
+
+    private void showAllExercises(){
+
+        System.out.println("** EXERCISES ** \n");
+
+        VDMSet exercises = this.ironTrainers.getExercises();
+
+        for(Object exercise : exercises){
+            Exercise ex = (Exercise) exercise;
+            System.out.println(ex.toString());
+        }
     }
 
     private void createFields(){
